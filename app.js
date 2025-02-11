@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const userRoutes = require('./routes/user');
 
 
 // Connexion à MongoDB
@@ -20,10 +21,17 @@ app.use((req, res, next) => {
   });
 
 
+
+
 // Réponse du serveur
 app.use((req, res) => {
     res.json({ message: 'Your request was successful!' });
 })
+
+
+app.use('/api/auth', userRoutes);
+
+
 
 
 module.exports = app;
