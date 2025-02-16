@@ -2,15 +2,15 @@ const bcrypt = require('bcrypt');
 const User = require('../models/user');
 
 
-exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
+exports.register = (req, res, next) => {
+    console.log(req.body.login['password']);
+    bcrypt.hash(req.body.login['paswword'], 10)
       .then(hash => {
         const user = new User({
-          nom: req.body.nom,
-          prenom: req.body.prenom,
-          pseudo: req.body.pseudo,
-          email: req.body.email,
-          password: hash
+          personalInfo: req.body.personalInfo,
+          emailInfo: req.body.email,
+          loginInfo: req.body.login,
+          image: req.body.image
         });
         user.save()
           .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
@@ -19,7 +19,9 @@ exports.signup = (req, res, next) => {
       .catch(error => res.status(500).json({ error }));
   };
 
+  
 
+  
 
 exports.login = (req, res, next) => {
    User.findOne({ email: req.body.email })
