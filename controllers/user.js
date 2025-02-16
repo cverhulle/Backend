@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
 
 
 exports.register = (req, res, next) => {
@@ -34,9 +35,9 @@ exports.register = (req, res, next) => {
   
 
 exports.login = (req, res, next) => {
+    
     // Recherche de l'utilisateur dans la base de données
-
-   User.findOne( { 'loginInfo.username' : req.body['username'] })
+    User.findOne( { 'loginInfo.username' : req.body['username'] })
        .then(user => {
 
             // Si l'utilisateur n'est pas trouvé, on renvoie une erreur 401.
@@ -54,8 +55,15 @@ exports.login = (req, res, next) => {
 
                    // Si les mots de passe correspondent, on renvoie un objet JSON avec un userId et un token.
                    res.status(200).json({
-                       userId: user._id,
-                       token: 'TOKEN'
+                          userId: user._id,
+
+                          // Création d'un token avec la méthode sign de jsonwebtoken
+                          token: jwt.sign(
+                            { userId: user._id },
+                            // Clé secrète pour crypter le token
+                            'TOKEN_SECRET',
+                            { expiresIn: '24h' }
+                          )
                    });
                })
                .catch(error => res.status(500).json({ error }));
