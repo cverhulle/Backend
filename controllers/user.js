@@ -3,8 +3,7 @@ const User = require('../models/user');
 
 
 exports.register = (req, res, next) => {
-    console.log(req.body.login['password']);
-    bcrypt.hash(req.body.login['paswword'], 10)
+    bcrypt.hash(req.body.login['password'], 10)
       .then(hash => {
         const user = new User({
           personalInfo: req.body.personalInfo,
