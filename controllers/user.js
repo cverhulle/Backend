@@ -8,9 +8,13 @@ exports.register = (req, res, next) => {
     // Hashage du mot de passe
     bcrypt.hash(req.body.login['password'], 10)
     .then(hash => {
+
+
         // On remplace les mots de passe en clair par le mot de passe hashé.
         req.body.login['password'] = hash;
         req.body.login['confirmPassword'] = hash;
+
+
         // Création d'un nouvel utilisateur avec le modèle mongoose et le mdp  hashé.
         const user = new User({
           personalInfo: req.body.personalInfo,
@@ -30,17 +34,25 @@ exports.register = (req, res, next) => {
   
 
 exports.login = (req, res, next) => {
+    // Recherche de l'utilisateur dans la base de données
 
-   User.findOne({ username: req.body.login['username'] })
+   User.findOne( { 'loginInfo.username' : req.body['username'] })
        .then(user => {
+
+            // Si l'utilisateur n'est pas trouvé, on renvoie une erreur 401.
            if (!user) {
-               return res.status(401).json({ message: 'Paire login/mot de passe incorrecte'});
+                console.log('User not found');
+                return res.status(401).json({ message: 'Paire login/mot de passe incorrecte'});
            }
-           bcrypt.compare(req.body.login['password'], user.loginInfo['password'])
+
+           // Si l'utilisateur est trouvé, on compare les mots de passe
+           bcrypt.compare(req.body['password'], user.loginInfo['password'])
                .then(valid => {
                    if (!valid) {
                        return res.status(401).json({ message: 'Paire login/mot de passe incorrecte' });
                    }
+
+                   // Si les mots de passe correspondent, on renvoie un objet JSON avec un userId et un token.
                    res.status(200).json({
                        userId: user._id,
                        token: 'TOKEN'
