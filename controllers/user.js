@@ -23,12 +23,13 @@ exports.register = (req, res, next) => {
   
 
 exports.login = (req, res, next) => {
+    // Trouver l'utilisateur dans la base de données (username et pas email)
    User.findOne({ email: req.body.email })
        .then(user => {
            if (!user) {
                return res.status(401).json({ message: 'Paire login/mot de passe incorrecte'});
            }
-           bcrypt.compare(req.body.password, user.password)
+           bcrypt.compare(req.body.login['password'], user.loginInfo['password'])
                .then(valid => {
                    if (!valid) {
                        return res.status(401).json({ message: 'Paire login/mot de passe incorrecte' });
