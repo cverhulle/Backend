@@ -12,6 +12,7 @@ mongoose.connect('mongodb+srv://cverhulle:TestOC212683@discord.hcb4b.mongodb.net
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 
+// Accéder aux paramètres res et req des requetes entrantes.
 app.use(express.json());
 
 
