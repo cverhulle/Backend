@@ -16,13 +16,14 @@ exports.register = (req, res, next) => {
         req.body.login['confirmPassword'] = hash;
 
 
-        // Création d'un nouvel utilisateur avec le modèle mongoose et le mdp  hashé.
+        // Création d'un nouvel utilisateur avec le modèle mongoose et le mdp hashé.
         const user = new User({
           personalInfo: req.body.personalInfo,
           emailInfo: req.body.email,
           loginInfo: req.body.login,
           image: req.body.image
         });
+        console.log(user.image)
         user.save()
           .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
           .catch(error => res.status(400).json({ error }));
