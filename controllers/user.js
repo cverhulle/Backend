@@ -7,6 +7,7 @@ exports.register = (req, res, next) => {
     // Création d'un nouvel utilisateur dans la base de données.
 
     // Hashage du mot de passe
+    
     bcrypt.hash(req.body.login['password'], 10)
     .then(hash => {
 
@@ -23,13 +24,15 @@ exports.register = (req, res, next) => {
           loginInfo: req.body.login,
           image: req.body.image
         });
-        console.log(user.image)
         user.save()
           .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
           .catch(error => res.status(400).json({ error }));
       })
-      .catch(error => res.status(500).json({ error }));
+      .catch(
+        error => res.status(500).json({ error }));
   };
+
+
 
   
 
