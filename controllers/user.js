@@ -76,3 +76,14 @@ exports.login = (req, res, next) => {
 };
 
 
+
+exports.emailExists = (req,res,next) => {
+  User.findOne({ 'emailInfo.email': req.body.email['email']})
+    .then( user => { 
+      if (user) {
+        console.log('test')
+        return res.status(200).json({message : 'Email déjà utilisé'}) 
+      }
+    })
+    .catch(() => res.status(200).json({ message : "L'email n'est pas utilisé" }))
+};
