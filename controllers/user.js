@@ -7,7 +7,6 @@ exports.register = (req, res, next) => {
     // Création d'un nouvel utilisateur dans la base de données.
 
     // Hashage du mot de passe
-    console.log('test')
     bcrypt.hash(req.body.login['password'], 10)
     .then(hash => {
 
@@ -15,7 +14,7 @@ exports.register = (req, res, next) => {
         // On remplace les mots de passe en clair par le mot de passe hashé.
         req.body.login['password'] = hash;
         req.body.login['confirmPassword'] = hash;
-
+        console.log(req.body)
 
         // Création d'un nouvel utilisateur avec le modèle mongoose et le mdp hashé.
         const user = new User({
@@ -24,6 +23,7 @@ exports.register = (req, res, next) => {
           loginInfo: req.body.login,
           image: req.body.image
         });
+        console.log(user)
         user.save()
           .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
           .catch(error => res.status(400).json({ error }));
