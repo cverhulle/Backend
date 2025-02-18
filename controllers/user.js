@@ -7,7 +7,7 @@ exports.register = (req, res, next) => {
     // Création d'un nouvel utilisateur dans la base de données.
 
     // Hashage du mot de passe
-    
+    console.log('test')
     bcrypt.hash(req.body.login['password'], 10)
     .then(hash => {
 
