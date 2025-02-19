@@ -30,7 +30,7 @@ exports.register = (req, res, next) => {
               .catch(error => res.status(400).json({ message: 'Username et/ou email déjà utilisé(s)' }));
           }
           )
-          .catch(error => res.status(400).json({message: 'Erreur'}))
+          .catch(error => res.status(400).json({message: "Erreur dans l'initialistion du modèle"}))
     })
     .catch(error => res.status(500).json({ error }));
   };
@@ -84,10 +84,12 @@ exports.emailExists = (req,res,next) => {
   User.findOne({ 'emailInfo.email': req.body.email['email']})
     .then( user => { 
       if (user) {
-        return res.status(200).json({message : 'Email déjà utilisé'}) 
+        return res.status(400).json({message : 'Email déjà utilisé'}) 
       }
+      return res.status(200).json({messsage: "L'email n'est pas utilisé"})
     })
-    .catch(() => res.status(200).json({ message : "L'email n'est pas utilisé" }))
+    .catch(() => res.status(400).json({ message : "Erreur dans la recherche" }))
+  
 };
 
 
@@ -95,8 +97,9 @@ exports.usernameExists = (req,res,next) => {
   User.findOne({ 'loginInfo.username': req.body.login['username']})
     .then( user => { 
       if (user) {
-        return res.status(200).json({message : 'Username déjà utilisé'}) 
+        return res.status(400).json({message : 'Username déjà utilisé'}) 
       }
+      return res.status(200).json({messsage: "L'username n'est pas utilisé"})
     })
-    .catch(() => res.status(200).json({ message : "L'username n'est pas utilisé" }))
+    .catch(() => res.status(400).json({ message : "Erreur dans la recherche" }))
 };
