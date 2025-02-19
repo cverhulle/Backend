@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 exports.register = (req, res, next) => {
     // Création d'un nouvel utilisateur dans la base de données.
-
+    
     // Hashage du mot de passe
     bcrypt.hash(req.body.login['password'], 10)
     .then(hash => {
@@ -16,24 +16,23 @@ exports.register = (req, res, next) => {
         
         // On initilise le modèle avant sa création pour prendre en compte le mot clé "unique" du modèle
         User.init()
-        .then( async () => {
-          // Création d'un nouvel utilisateur avec le modèle mongoose et le mdp hashé.
-          const user = new User({
-            personalInfo: req.body.personalInfo,
-            emailInfo: req.body.email,
-            loginInfo: req.body.login,
-            image: req.body.image
-          });
-          
-          user.save()
-            .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-            .catch(error => res.status(400).json({ message: 'Erreur dans la sauvegarde sur le serveur' }));
-        }
-      )
-      .catch(error => res.statut(400).json({message: 'Username et/ou email déjà utilisé(s)'}))
+          .then( async () => {
+            // Création d'un nouvel utilisateur avec le modèle mongoose et le mdp hashé.
+            const user = new User({
+              personalInfo: req.body.personalInfo,
+              emailInfo: req.body.email,
+              loginInfo: req.body.login,
+              image: req.body.image
+            });
+            
+            user.save()
+              .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+              .catch(error => res.status(400).json({ message: 'Username et/ou email déjà utilisé(s)' }));
+          }
+          )
+          .catch(error => res.status(400).json({message: 'Erreur'}))
     })
-      .catch(
-        error => res.status(500).json({ error }));
+    .catch(error => res.status(500).json({ error }));
   };
 
 
