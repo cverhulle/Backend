@@ -45,7 +45,7 @@ exports.login = (req, res, next) => {
     
     // Recherche de l'utilisateur dans la base de données
     User.findOne( { 'loginInfo.username' : req.body['username'] })
-       .then(user => {
+      .then(user => {
 
             // Si l'utilisateur n'est pas trouvé, on renvoie une erreur 401.
            if (!user) {
@@ -55,27 +55,29 @@ exports.login = (req, res, next) => {
 
            // Si l'utilisateur est trouvé, on compare les mots de passe
            bcrypt.compare(req.body['password'], user.loginInfo['password'])
-               .then(valid => {
-                   if (!valid) {
-                       return res.status(401).json({ message: 'Paire login/mot de passe incorrecte' });
+              .then(valid => {
+                  if (!valid) {
+                      console.log('Le mot de passe est incorrect')
+                      return res.status(401).json({ message: 'Paire login/mot de passe incorrecte' });
                    }
 
-                   // Si les mots de passe correspondent, on renvoie un objet JSON avec un userId et un token.
-                   res.status(200).json({
-                          userId: user._id,
+                  // Si les mots de passe correspondent, on renvoie un objet JSON avec un userId et un token.
+                  console.log('Connexion réussie')
+                  res.status(200).json({
+                      userId: user._id,
 
-                          // Création d'un token avec la méthode sign de jsonwebtoken
-                          token: jwt.sign(
-                            { userId: user._id },
-                            // Clé secrète pour crypter le token
-                            'TOKEN_SECRET',
-                            { expiresIn: '24h' }
-                          )
-                   });
+                      // Création d'un token avec la méthode sign de jsonwebtoken
+                      token: jwt.sign(
+                        { userId: user._id },
+                        // Clé secrète pour crypter le token
+                        'TOKEN_SECRET',
+                        { expiresIn: '24h' }
+                        )
+                  });
                })
-               .catch(error => res.status(500).json({ error }));
-       })
-       .catch(error => res.status(500).json({ error }));
+              .catch(error => res.status(500).json({ error }));
+      })
+      .catch(error => res.status(500).json({ error }));
 };
 
 
