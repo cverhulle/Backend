@@ -5,7 +5,7 @@ const auth = require('../middleware/auth');
 
 
 
-router.use('/:id', profileCtrl.getProfile);
+router.use('/:id', auth, profileCtrl.getProfile);
 
 
 
