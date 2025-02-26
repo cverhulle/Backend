@@ -5,8 +5,8 @@ const auth = require('../middleware/auth');
 
 
 
-router.use('', auth, profileCtrl.getProfile);
-
+router.get('', auth, profileCtrl.getProfile);
+router.put('/modify', auth, profileCtrl.modifyProfile)
 
 
 module.exports = router;

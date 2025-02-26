@@ -9,3 +9,8 @@ exports.getProfile = (req, res, next) => {
 
         .catch(error => res.status(400).json({error}))
 }
+
+exports.modifyProfile = (req, res, next) => {
+    console.log('test')
+    res.status(200).json({message : 'ok'})
+}
