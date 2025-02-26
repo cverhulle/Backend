@@ -20,8 +20,6 @@ exports.modifyProfile = (req, res, next) => {
         'emailInfo.email':email.email,
         'emailInfo.confirmEmail': email.confirmEmail,
         'loginInfo.username': login.username,
-        'loginInfo.password': login.password,
-        'loginInfo.confirmPassword': login.confirmPassword,
         'image': image
     }
 
