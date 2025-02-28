@@ -31,6 +31,8 @@ exports.modifyProfile = (req, res, next) => {
         .catch(error => res.status(400).json({error}))
 }
 
+
+// Méthode pour vérifier si l'email est déjà pris par un autre utilisateur.
 exports.emailTaken = (req,res,next) => {
   User.findOne({ 'emailInfo.email': req.body.email['email'], _id: {$ne: req.auth['userId']} })
     .then( user => { 
