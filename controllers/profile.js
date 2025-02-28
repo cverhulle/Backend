@@ -44,3 +44,15 @@ exports.emailTaken = (req,res,next) => {
     .catch(() => res.status(400).json({ message : "Erreur dans la recherche" }))
   
 };
+
+// Méthode pour vérifier si l'username est déjà pris par un autre utilisateur.
+exports.usernameTaken = (req,res,next) => {
+  User.findOne({ 'loginInfo.username': req.body.login['username'], _id: {$ne: req.auth['userId']} })
+    .then( user => { 
+      if (user) {
+        return res.status(400).json({message : 'Username déjà utilisé'}) 
+      }
+      return res.status(200).json({messsage: "L'username n'est pas utilisé"})
+    })
+    .catch(() => res.status(400).json({ message : "Erreur dans la recherche" }))
+};
