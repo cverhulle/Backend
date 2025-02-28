@@ -30,3 +30,15 @@ exports.modifyProfile = (req, res, next) => {
         .then((user) => res.status(200).json({message : "L'utilisateur a été modifié"}))
         .catch(error => res.status(400).json({error}))
 }
+
+exports.emailTaken = (req,res,next) => {
+  User.findOne({ 'emailInfo.email': req.body.email['email'], _id: {$ne: req.auth['userId']} })
+    .then( user => { 
+      if (user) {
+        return res.status(400).json({message : 'Email déjà utilisé'}) 
+      }
+      return res.status(200).json({messsage: "L'email n'est pas utilisé"})
+    })
+    .catch(() => res.status(400).json({ message : "Erreur dans la recherche" }))
+  
+};
