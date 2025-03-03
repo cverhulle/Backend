@@ -39,6 +39,8 @@ exports.modifyPassword = (req, res, next) => {
   // Hashage du mot de passe
   bcrypt.hash(password, 10)
     .then(hash => {
+
+      // Variable pour construire les éléments à modifier dans la BDD.
       const updateData = {
         'loginInfo.password': hash,
         'loginInfo.confirmPassword': hash
