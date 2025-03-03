@@ -1,4 +1,5 @@
 const User = require ('../models/user')
+const bcrypt = require('bcrypt');
 
 // Cette méthode retourne les infos sur l'utilisteur à l'id fixé.
 exports.getProfile = (req, res, next) => {
@@ -32,7 +33,23 @@ exports.modifyProfile = (req, res, next) => {
 }
 
 exports.modifyPassword = (req, res, next) => {
+  // On récupère le password de la requete.
+  const password = req.body['login']['password']
   
+  // Hashage du mot de passe
+  bcrypt.hash(password, 10)
+    .then(hash => {
+      const updateData = {
+        'loginInfo.password': hash,
+        'loginInfo.confirmPassword': hash
+      }
+
+      User.updateOne( {_id : req.auth['userId'] }, updateData)
+        .then(()=> res.status(200).json( {message : "Le mot de passe a été modifié"} ))
+        .catch((error) => res.status(400).json( {error} ))
+    })
+    .catch(error => res.status(500).json({ error }));
+
 }
 
 
