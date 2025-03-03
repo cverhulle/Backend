@@ -31,6 +31,10 @@ exports.modifyProfile = (req, res, next) => {
         .catch(error => res.status(400).json({error}))
 }
 
+exports.modifyPassword = (req, res, next) => {
+  
+}
+
 
 // Méthode pour vérifier si l'email est déjà pris par un autre utilisateur.
 exports.emailTaken = (req,res,next) => {
