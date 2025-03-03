@@ -7,7 +7,7 @@ const auth = require('../middleware/auth');
 
 router.get('', auth, profileCtrl.getProfile);
 router.put('/modify', auth, profileCtrl.modifyProfile)
-router.post('/modifyPassword', auth, profileCtrl.modifyPassword)
+router.put('/modifyPassword', auth, profileCtrl.modifyPassword)
 router.post('/email', auth, profileCtrl.emailTaken)
 router.post('/username', auth, profileCtrl.usernameTaken)
 
