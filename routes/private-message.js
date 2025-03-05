@@ -5,8 +5,7 @@ const privateMessageCtrl = require('../controllers/private-message') ;
 
 
 
-
-
+router.get('/queryUsers', auth, privateMessageCtrl.queryUsers)
 
 
 module.exports = router;
