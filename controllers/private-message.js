@@ -16,11 +16,13 @@ exports.queryUsers = (req, res, next) => {
             
             // Avec le select seul, username est "coincé" comme paramètre d'un objet loginInfo.
             const formattedUsers = users.map(user => ({
-                id : user._id,
+                id : user._id.toString(),
                 username : user.loginInfo.username,
                 image : user.image
             }));
+
             console.log(formattedUsers)
+            
             res.status(200).json(formattedUsers)
         })
         .catch(error => res.status(500).json({error}))
