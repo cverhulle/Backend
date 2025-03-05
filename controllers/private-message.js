@@ -8,10 +8,20 @@ exports.queryUsers = (req, res, next) => {
     // Le $regex permet de chercher les username contenant la recherche formulée.
     // Options permet d'être insensible à la casse : Co, co et CO seront traités de la même façon.
     User.find({'loginInfo.username' : {$regex: searchQuery, $options : 'i'} })
+
+        // On selectionne les champs à retourner
         .select('loginInfo.username image')
+
         .then(users => {
-            console.log(users)
-            res.status(200).json(users)
+            
+            // Avec le select seul, username est "coincé" comme paramètre d'un objet loginInfo.
+            const formattedUsers = users.map(user => ({
+                id : user._id,
+                username : user.loginInfo.username,
+                image : user.image
+            }));
+            console.log(formattedUsers)
+            res.status(200).json(formattedUsers)
         })
         .catch(error => res.status(500).json({error}))
 
