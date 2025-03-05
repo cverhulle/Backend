@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/user');
 const profileRoutes = require('./routes/profile');
+const privateMessageRoutes = require('./routes/private-message')
 
 // Connexion à MongoDB
 mongoose.connect('mongodb+srv://cverhulle:TestOC212683@discord.hcb4b.mongodb.net/?retryWrites=true&w=majority&appName=Discord')
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 
 app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
+app.use('/api/private-message', privateMessageRoutes);
 
 
 
