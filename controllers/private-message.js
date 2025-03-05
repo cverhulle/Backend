@@ -21,8 +21,6 @@ exports.queryUsers = (req, res, next) => {
                 image : user.image
             }));
 
-            console.log(formattedUsers)
-            
             res.status(200).json(formattedUsers)
         })
         .catch(error => res.status(500).json({error}))
