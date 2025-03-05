@@ -8,6 +8,7 @@ exports.queryUsers = (req, res, next) => {
     // Le $regex permet de chercher les username contenant la recherche formulée.
     // Options permet d'être insensible à la casse : Co, co et CO seront traités de la même façon.
     User.find({'loginInfo.username' : {$regex: searchQuery, $options : 'i'} })
+        .select('loginInfo.username image')
         .then(users => {
             console.log(users)
             res.status(200).json(users)
