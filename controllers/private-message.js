@@ -54,3 +54,24 @@ exports.savePost = (req, res, next) => {
         })
         .catch(error => res.status(400).json( {message: "Erreur dans l'initialistion du modèle"} ))
 }
+
+
+exports.getPosts = (req, res, next) => {
+    const otherUserId = req.query.otherUserId
+
+    // On vérifie que otherUserId existe bien
+    if( !otherUserId) {
+        return res.status(400).json({ message: "L'id du destinataire est manquant" });
+    }
+
+    Post.find({currentUserId : req.auth.userId}, {otherUserId: otherUserId})
+        .sort({timestamp : 1})
+        .then(posts => {
+            console.log(posts)
+            res.status(200).json(posts);
+        })
+        .catch(error => res.status(500).json({ message: 'Erreur lors de la récupération des posts' }))
+
+
+    
+}
