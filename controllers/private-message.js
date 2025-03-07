@@ -30,5 +30,27 @@ exports.queryUsers = (req, res, next) => {
 
 
 exports.savePost = (req, res, next) => {
-    console.log(req.body)
+    const { currentUserId, otherUserId, username, image, content, timestamp} = req.body;
+    
+    // On vérifie si les données de la requete sont correctes.
+    if ( !currentUserId || !otherUserId || !username || !image || !content || !timestamp) {
+        return res.status(400).json({ message: 'Tous les champs sont requis.' });
+    }
+
+    Post.init()
+        .then( async () => {
+            // Création du post
+            const post = new Post({
+                currentUserId : currentUserId,
+                otherUserId : otherUserId,
+                username : username,
+                image : image,
+                content: content,
+                timestamp: timestamp
+            })
+            post.save()
+                .then(() => res.status(201).json({ message: 'Post crée' }))
+                .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
+        })
+        .catch(error => res.status(400).json( {message: "Erreur dans l'initialistion du modèle"} ))
 }
