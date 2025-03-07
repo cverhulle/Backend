@@ -69,7 +69,6 @@ exports.getPosts = (req, res, next) => {
     Post.find({$or: [{currentUserId : req.auth.userId, otherUserId : otherUserId}, {currentUserId : otherUserId, otherUserId : req.auth.userId}] })
         .sort({timestamp : 1})
         .then(posts => {
-            console.log(posts)
             res.status(200).json(posts);
         })
         .catch(error => res.status(500).json({ message: 'Erreur lors de la récupération des posts' }))
