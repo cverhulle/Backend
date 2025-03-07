@@ -1,4 +1,5 @@
 const User = require ('../models/user')
+const Post = require ('../models/post')
 
 // Cette méthode retourne les utilisateurs, à l'exception de celui qui fait la requete, en fonction de l'entrée formulée.
 exports.queryUsers = (req, res, next) => {
@@ -29,5 +30,5 @@ exports.queryUsers = (req, res, next) => {
 
 
 exports.savePost = (req, res, next) => {
-    
+    console.log(req.body)
 }
