@@ -64,7 +64,7 @@ exports.getPosts = (req, res, next) => {
         return res.status(400).json({ message: "L'id du destinataire est manquant" });
     }
 
-    Post.find({currentUserId : req.auth.userId}, {otherUserId: otherUserId})
+    Post.find({$or: [{currentUserId : req.auth.userId}, {otherUserId: otherUserId}] })
         .sort({timestamp : 1})
         .then(posts => {
             console.log(posts)
