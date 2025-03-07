@@ -57,6 +57,7 @@ exports.savePost = (req, res, next) => {
 
 
 exports.getPosts = (req, res, next) => {
+    // On récupère l'userId de l'autre personne
     const otherUserId = req.query.otherUserId
 
     // On vérifie que otherUserId existe bien
@@ -64,7 +65,8 @@ exports.getPosts = (req, res, next) => {
         return res.status(400).json({ message: "L'id du destinataire est manquant" });
     }
 
-    Post.find({$or: [{currentUserId : req.auth.userId}, {otherUserId: otherUserId}] })
+    // On cherche les posts contenant l'utilisateur actuel en tant qu'envoyeur ou receveur du message.
+    Post.find({$or: [{currentUserId : req.auth.userId, otherUserId : otherUserId}, {currentUserId : otherUserId, otherUserId : req.auth.userId}] })
         .sort({timestamp : 1})
         .then(posts => {
             console.log(posts)
