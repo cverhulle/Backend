@@ -66,7 +66,12 @@ exports.getPosts = (req, res, next) => {
     }
 
     // On cherche les posts contenant l'utilisateur actuel en tant qu'envoyeur ou receveur du message.
-    Post.find({$or: [{currentUserId : req.auth.userId, otherUserId : otherUserId}, {currentUserId : otherUserId, otherUserId : req.auth.userId}] })
+    Post.find({$or: [{currentUserId : req.auth.userId, otherUserId : otherUserId}, 
+                     {currentUserId : otherUserId, otherUserId : req.auth.userId}
+                    ] 
+        })
+
+        // On trie par date croissantz
         .sort({timestamp : 1})
         .then(posts => {
             res.status(200).json(posts);
@@ -75,4 +80,40 @@ exports.getPosts = (req, res, next) => {
 
 
     
+}
+
+
+exports.getPreviousPosts = (req, res, next) => {
+    const otherUserId = req.query.otherUserId;
+
+    // On récupère le nombre de messages à ignorer.
+    const skip = parseInt(req.query.skip)
+
+    // On vérifie que otherUserId existe bien dans la requete.
+    if (!otherUserId) {
+        return res.status(400).json({ message: "L'id du destinataire est manquant" });
+    }
+
+    // On cherche les posts contenant l'utilisateur actuel en tant qu'envoyeur ou receveur du message.
+    Post.find({
+        $or: [
+            { currentUserId: req.auth.userId, otherUserId: otherUserId },
+            { currentUserId: otherUserId, otherUserId: req.auth.userId }
+        ]
+    })
+
+        // On trie par date décroissante.
+        .sort({ timestamp: -1 })
+
+        // On ignore le nombre de messages spécifié dans skip.
+        .skip(skip) 
+
+        // On limite le nombre de messages récupérés à 10.
+        .limit(10) 
+
+        .then(posts => {
+            // On remet les messages du plus récent au plus ancien.
+            res.status(200).json(posts.reverse()); 
+        })
+        .catch(error => res.status(500).json({ message: 'Erreur lors de la récupération des posts' }));
 }
