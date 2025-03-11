@@ -28,7 +28,7 @@ exports.queryUsers = (req, res, next) => {
 
 }
 
-
+// Cette méthode permet de sauvegarder un message dans la base de données.
 exports.savePost = (req, res, next) => {
     const { currentUserId, otherUserId, username, image, content, timestamp} = req.body;
     
@@ -55,7 +55,7 @@ exports.savePost = (req, res, next) => {
         .catch(error => res.status(400).json( {message: "Erreur dans l'initialistion du modèle"} ))
 }
 
-
+// Cette méthode permet de récupérer tous les messages entre deux utilisateurs.
 exports.getPosts = (req, res, next) => {
     // On récupère l'userId de l'autre personne
     const otherUserId = req.query.otherUserId
@@ -82,7 +82,7 @@ exports.getPosts = (req, res, next) => {
     
 }
 
-
+// Cette méthode permet de récupérer les 10 derniers messages entre deux utilisateurs.
 exports.getPreviousPosts = (req, res, next) => {
     const otherUserId = req.query.otherUserId;
 
