@@ -126,6 +126,9 @@ exports.deletePost = (req, res, next) => {
 
         Post.findOneAndDelete({ currentUserId: currentUserId, timestamp: postTimestamp })
             .then((deletePost) => {
+                if (!deletePost) {
+                    return res.status(404).json({ message: 'Post non trouvé' });
+                }
                 res.status(200).json({ message: 'Post supprimé' });
             })
             .catch((error) => {
