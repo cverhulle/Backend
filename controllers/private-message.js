@@ -119,4 +119,19 @@ exports.getPreviousPosts = (req, res, next) => {
 }
 
 
-exports.deletePost = (req, res, next) => {}
+exports.deletePost = (req, res, next) => {
+    try{
+        const postTimestamp = new Date(req.query.timestamp);
+        const currentUserId = req.auth.userId;
+
+        Post.findOneAndDelete({ currentUserId: currentUserId, timestamp: postTimestamp })
+            .then((deletePost) => {
+                res.status(200).json({ message: 'Post supprimé' });
+            })
+            .catch((error) => {
+                res.status(500).json({ error });
+            });
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+}
