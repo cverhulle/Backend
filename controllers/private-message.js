@@ -117,3 +117,6 @@ exports.getPreviousPosts = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ message: 'Erreur lors de la récupération des posts' }));
 }
+
+
+exports.deletePost = (req, res, next) => {}
