@@ -42,6 +42,7 @@ exports.savePost = (req, res, next) => {
         .then( async () => {
             // Création du post
             const post = new Post({
+                // On met un string en attendant de récupérer l'id du post.
                 postId: 'attente',
                 currentUserId : currentUserId,
                 otherUserId : otherUserId,
@@ -52,8 +53,10 @@ exports.savePost = (req, res, next) => {
             })
             post.save()
                 .then( (savedPost) => {
+                    // On met à jour le postId avec l'id du post nouvellement crée.
                     savedPost.postId = savedPost._id;
-                    savedPost.save()                 
+                    savedPost.save()                
+                        // On retourne postId pour le front. 
                         .then((savedPost) => res.status(201).json({ message: 'Post crée', postId: savedPost._id }))
                         .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
                 })
@@ -129,8 +132,11 @@ exports.getPreviousPosts = (req, res, next) => {
 
 exports.deletePost = (req, res, next) => {
     try{
+        // On récupère le postId.
         const postId = req.query.postId;
         const currentUserId = req.auth.userId;
+
+        // On supprime le post en fonction du currentUserId et du postId.
         Post.findOneAndDelete({ currentUserId: currentUserId, _id : postId })
             .then((deletePost) => {
                 if (!deletePost) {
