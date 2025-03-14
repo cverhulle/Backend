@@ -1,5 +1,6 @@
 const User = require ('../models/user')
-const Post = require ('../models/post')
+const Post = require ('../models/post');
+const post = require('../models/post');
 
 // Cette méthode retourne les utilisateurs, à l'exception de celui qui fait la requete, en fonction de l'entrée formulée.
 exports.queryUsers = (req, res, next) => {
@@ -41,6 +42,7 @@ exports.savePost = (req, res, next) => {
         .then( async () => {
             // Création du post
             const post = new Post({
+                postId: 'attente',
                 currentUserId : currentUserId,
                 otherUserId : otherUserId,
                 username : username,
@@ -49,9 +51,15 @@ exports.savePost = (req, res, next) => {
                 timestamp: timestamp
             })
             post.save()
-                .then((savedPost) => res.status(201).json({ message: 'Post crée', postId: savedPost._id }))
-                .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
-        })
+                .then( (savedPost) => {
+                    savedPost.postId = savedPost._id;
+                    savedPost.save()                 
+                        .then((savedPost) => res.status(201).json({ message: 'Post crée', postId: savedPost._id }))
+                        .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
+                })
+                .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }))
+                
+        })    
         .catch(error => res.status(400).json( {message: "Erreur dans l'initialistion du modèle"} ))
 }
 
