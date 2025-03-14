@@ -123,7 +123,6 @@ exports.deletePost = (req, res, next) => {
     try{
         const postId = req.query.postId;
         const currentUserId = req.auth.userId;
-        console.log(postId)
         Post.findOneAndDelete({ currentUserId: currentUserId, _id : postId })
             .then((deletePost) => {
                 if (!deletePost) {
