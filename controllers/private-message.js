@@ -121,7 +121,6 @@ exports.getPreviousPosts = (req, res, next) => {
 
 exports.deletePost = (req, res, next) => {
     try{
-        console.log(req.params)
         const postId = req.query.postId;
         const currentUserId = req.auth.userId;
         console.log(postId)
