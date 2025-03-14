@@ -121,10 +121,10 @@ exports.getPreviousPosts = (req, res, next) => {
 
 exports.deletePost = (req, res, next) => {
     try{
-        const postTimestamp = new Date(req.query.postTimestamp);
+        const postId = req.params.postId;
         const currentUserId = req.auth.userId;
         
-        Post.findOneAndDelete({ currentUserId: currentUserId, timestamp: postTimestamp })
+        Post.findOneAndDelete({ currentUserId: currentUserId, _id : postId })
             .then((deletePost) => {
                 if (!deletePost) {
                     return res.status(404).json({ message: 'Post non trouvé' });
