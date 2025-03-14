@@ -49,7 +49,7 @@ exports.savePost = (req, res, next) => {
                 timestamp: timestamp
             })
             post.save()
-                .then(() => res.status(201).json({ message: 'Post crée', postId: savedPost._id }))
+                .then((savedPost) => res.status(201).json({ message: 'Post crée', postId: savedPost._id }))
                 .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
         })
         .catch(error => res.status(400).json( {message: "Erreur dans l'initialistion du modèle"} ))
