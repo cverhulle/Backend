@@ -176,7 +176,6 @@ exports.updatePost = (req, res, next) => {
             if(!updatedPost) {
                 return res.status(404).json({message : "Post non trouvé"})
             } 
-            console.log(updatedPost)
             res.status(200).json(updatedPost)
         })
         .catch(error => res.status(500).json({error}))
