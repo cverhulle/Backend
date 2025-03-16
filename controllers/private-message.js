@@ -151,3 +151,7 @@ exports.deletePost = (req, res, next) => {
         res.status(500).json({ error });
     }
 }
+
+exports.deletePost = (req, res, next) => {
+    console.log('Test')
+}
