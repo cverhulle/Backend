@@ -168,12 +168,15 @@ exports.updatePost = (req, res, next) => {
         // Arguments pour rechercher le post.
         {currentUserId : currentUserId, _id : postId},
         // Contenu à modifier
-        {content : newContent}
+        {content : newContent},
+        // On ajoute cette ligne pour que le updatedPost dans le .then ait les modifications.
+        {new : true}
     )
         .then((updatedPost) => {
             if(!updatedPost) {
                 return res.status(404).json({message : "Post non trouvé"})
             } 
+            console.log(updatedPost)
             res.status(200).json(updatedPost)
         })
         .catch(error => res.status(500).json({error}))
