@@ -153,5 +153,24 @@ exports.deletePost = (req, res, next) => {
 }
 
 exports.updatePost = (req, res, next) => {
-    console.log('Test')
+    const postId = req.body.postId;
+    const newContent = req.body.content
+    const currentUserId = req.auth.userId;
+
+    // Vérification que postId et newContent sont présents
+    if (!postId || !newContent) {
+        return res.status(400).json({ message: "ID du post et contenu requis" });
+    }
+
+    Post.findOneAndUpdate( 
+        {currentUserId : currentUserId, _id : postId},
+        {content : newContent}
+    )
+        .then((updatedPost) => {
+            if(!updatedPost) {
+                return res.status(404).json({message : "Post non trouvé"})
+            } 
+            res.status(200).json(updatedPost)
+        })
+        .catch(error => res.status(500).json({error}))
 }
