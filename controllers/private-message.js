@@ -152,6 +152,6 @@ exports.deletePost = (req, res, next) => {
     }
 }
 
-exports.deletePost = (req, res, next) => {
+exports.updatePost = (req, res, next) => {
     console.log('Test')
 }
