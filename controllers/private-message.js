@@ -152,7 +152,9 @@ exports.deletePost = (req, res, next) => {
     }
 }
 
+// Cette méthode permet de modifier le contenu d'un post.
 exports.updatePost = (req, res, next) => {
+    // On récupère l'id du post et le nouveau contenu.
     const postId = req.body.postId;
     const newContent = req.body.content
     const currentUserId = req.auth.userId;
@@ -163,7 +165,9 @@ exports.updatePost = (req, res, next) => {
     }
 
     Post.findOneAndUpdate( 
+        // Arguments pour rechercher le post.
         {currentUserId : currentUserId, _id : postId},
+        // Contenu à modifier
         {content : newContent}
     )
         .then((updatedPost) => {
