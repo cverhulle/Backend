@@ -10,6 +10,7 @@ router.get('/getPosts', auth, privateMessageCtrl.getPosts)
 router.get('/getPosts/previous', auth, privateMessageCtrl.getPreviousPosts)
 router.post('/post', auth, privateMessageCtrl.savePost)
 router.delete('/deletePost', auth, privateMessageCtrl.deletePost)
+router.put('/updatePost', auth, privateMessageCtrl.updatePost)
 
 
 module.exports = router;
