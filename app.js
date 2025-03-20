@@ -4,9 +4,10 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/user');
 const profileRoutes = require('./routes/profile');
 const privateMessageRoutes = require('./routes/private-message')
+require('dotenv').config()
 
 // Connexion à MongoDB
-mongoose.connect('mongodb+srv://cverhulle:TestOC212683@discord.hcb4b.mongodb.net/?retryWrites=true&w=majority&appName=Discord')
+mongoose.connect(process.env.MONGODB_CODE)
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
