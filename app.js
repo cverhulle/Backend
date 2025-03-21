@@ -7,6 +7,8 @@ const profileRoutes = require('./routes/profile');
 const privateMessageRoutes = require('./routes/private-message')
 require('dotenv').config()
 
+
+
 // Connexion à MongoDB
 mongoose.connect(process.env.MONGODB_CODE)
     .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -36,7 +38,13 @@ app.use((req, res, next) => {
 
 
 
+// Pour tester le middleware d'upload d'images
+const uploadImages = require('./middleware/uploadImages')
 
+// On teste le middleware d'upload d'images en répondant directement à la requete 
+app.post('/upload', uploadImages, (req, res) => {
+    res.status(201).json({ message: 'Fichier téléchargé avec succès', path: req.filePath });
+});
 
 
 app.use('/api/users', userRoutes);
