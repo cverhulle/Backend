@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path= require('path')
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/user');
 const profileRoutes = require('./routes/profile');
@@ -16,7 +17,7 @@ mongoose.connect(process.env.MONGODB_CODE)
 app.use(express.json());
 
 // Accéder aux fichiers dans le dossier images
-app.use(express.static(this.path.join(__dirname,'images')));
+app.use(express.static(path.join(__dirname,'images')));
 
 // Résoudre les problèmes de CORS
 
