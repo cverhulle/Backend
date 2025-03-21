@@ -14,8 +14,10 @@ const uploadMiddleware = (req, res, next) => {
     req.pipe(writeStream);
 
     writeStream.on('finish', () => {
-        req.filePath = filePath; // Ajouter le chemin du fichier à la requête
-        next(); // Passer au middleware suivant
+        // Ajouter le chemin du fichier à la requête
+        req.filePath = filePath; 
+        // Passer au middleware suivant
+        next(); 
     });
 
     writeStream.on('error', (err) => {
