@@ -15,6 +15,8 @@ mongoose.connect(process.env.MONGODB_CODE)
 // Accéder aux paramètres res et req des requetes entrantes.
 app.use(express.json());
 
+// Accéder aux fichiers dans le dossier images
+app.use(express.static(this.path.join(__dirname,'images')));
 
 // Résoudre les problèmes de CORS
 
