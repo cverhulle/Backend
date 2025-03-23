@@ -21,8 +21,8 @@ app.use(express.json());
 // Accéder aux fichiers dans le dossier images
 app.use(express.static(path.join(__dirname,'images')));
 
-// Résoudre les problèmes de CORS
 
+// Résoudre les problèmes de CORS
 app.use((req, res, next) => {
 
     // Vérifier si la requête est une requête OPTIONS
