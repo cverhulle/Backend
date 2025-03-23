@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 const uploadImages = require('./middleware/uploadImages')
 
 // On teste le middleware d'upload d'images en répondant directement à la requete 
-app.post('/upload', uploadImages, (req, res) => {
+app.post('/api/upload', uploadImages, (req, res) => {
     res.status(201).json({ message: 'Fichier téléchargé avec succès', path: req.filePath });
 });
 
