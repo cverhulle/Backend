@@ -27,6 +27,9 @@ const uploadMiddleware = (req, res, next) => {
             // On découpe la chaîne bodyString en parties grâce à boundary
             const parts = bodyString.split(`--${boundary}`).filter(part => part && part !== '--');
 
+            // On crée un objet pour stocker les données.
+            const formData = {};
+
             // Pour chaque partie...
             parts.forEach(part => {
 
@@ -60,10 +63,24 @@ const uploadMiddleware = (req, res, next) => {
                             return res.status(500).json({ message: 'Erreur lors du téléchargement du fichier.' });
                         }
                         req.filePath = filePath; 
+                        formData.image = filePath
                         next(); 
                     });
+                } else {
+                    // Extrait les autres champs
+                    const nameMatch = part.match(/name="([^"]+)"/);
+                    const name = nameMatch ? nameMatch[1] : null;
+                    const start = part.indexOf('\r\n\r\n') + 4;
+                    const end = part.lastIndexOf(`--${boundary}`);
+
+                    if (name) {
+                        const value = part.slice(start, end).trim();
+                        formData[name] = value; 
+                    }
                 }
-            });
+            })
+
+            req.body = formData;
         });
 
         // On gère l'erreur lors de la réception des données
