@@ -199,7 +199,8 @@ exports.savePostImage = (req, res, next) => {
                 username : username,
                 image : image,
                 content: content,
-                timestamp: new Date()
+                timestamp: new Date(),
+                imageInChat : imageToSend
             })
             post.save()
                 .then( (savedPost) => {
