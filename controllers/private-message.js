@@ -182,5 +182,6 @@ exports.updatePost = (req, res, next) => {
 }
 
 exports.savePostImage = (req, res, next) => {
-    
+    console.log(req.body)
+    console.log('coucou')
 }
