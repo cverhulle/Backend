@@ -38,15 +38,6 @@ app.use((req, res, next) => {
 
 
 
-// Pour tester le middleware d'upload d'images
-const uploadImages = require('./middleware/uploadImages')
-
-// On teste le middleware d'upload d'images en répondant directement à la requete 
-app.post('/api/upload', uploadImages, (req, res) => {
-    res.status(201).json({ message: 'Fichier téléchargé avec succès', path: req.filePath });
-});
-
-
 app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/private-message', privateMessageRoutes);
