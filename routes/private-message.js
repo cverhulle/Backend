@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const privateMessageCtrl = require('../controllers/private-message') ;
-const uploadImages = require('./middleware/uploadImages')
+const uploadImages = require('../middleware/uploadImages')
 
 
 
