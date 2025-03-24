@@ -182,6 +182,16 @@ exports.updatePost = (req, res, next) => {
 }
 
 exports.savePostImage = (req, res, next) => {
-    console.log(req.body)
-    console.log('coucou')
+    const { currentUserId, otherUserId, username, content, image, imageToSend } = req.body;
+    
+    if (!currentUserId || !otherUserId || !username || !content || !image || !imageToSend) {
+        return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
+    }
+
+    console.log(currentUserId)
+    console.log(otherUserId)
+    console.log(username)
+    console.log(content)
+    console.log(image)
+    console.log(imageToSend)
 }
