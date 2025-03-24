@@ -188,10 +188,30 @@ exports.savePostImage = (req, res, next) => {
         return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
     }
 
-    console.log(currentUserId)
-    console.log(otherUserId)
-    console.log(username)
-    console.log(content)
-    console.log(image)
-    console.log(imageToSend)
+    Post.init()
+        .then( async () => {
+            // Création du post
+            const post = new Post({
+                // On met un string en attendant de récupérer l'id du post.
+                postId: 'attente',
+                currentUserId : currentUserId,
+                otherUserId : otherUserId,
+                username : username,
+                image : image,
+                content: content,
+                timestamp: new Date()
+            })
+            post.save()
+                .then( (savedPost) => {
+                    // On met à jour le postId avec l'id du post nouvellement crée.
+                    savedPost.postId = savedPost._id;
+                    savedPost.save()                
+                        // On retourne postId pour le front. 
+                        .then((savedPost) => res.status(201).json({ message: 'Post crée', postId: savedPost._id }))
+                        .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
+                })
+                .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }))
+                
+        })    
+        .catch(error => res.status(400).json( {message: "Erreur dans l'initialistion du modèle"} ))
 }
