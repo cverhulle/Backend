@@ -8,6 +8,7 @@ const postSchema = new mongoose.Schema({
     image: {type : String, required : true},
     content: {type : String, required : true},
     timestamp: {type : Date, required : true, default: Date.now},
+    imageInChat: {type : String}
 })
 
 
