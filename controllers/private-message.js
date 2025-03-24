@@ -180,3 +180,7 @@ exports.updatePost = (req, res, next) => {
         })
         .catch(error => res.status(500).json({error}))
 }
+
+exports.savePostImage = (req, res, next) => {
+    
+}
