@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
+// Ce middleware reçoit une requête contenant une image et l'enregistre dans le dossier images.
 const uploadMiddleware = (req, res, next) => {
 
     // On vérifie que la requête est bien de type multipart/data
