@@ -208,7 +208,7 @@ exports.savePostImage = (req, res, next) => {
                     savedPost.postId = savedPost._id;
                     savedPost.save()                
                         // On retourne postId pour le front. 
-                        .then((savedPost) => res.status(201).json({ message: 'Post crée', postId: savedPost._id, imageInChat : imageInChat }))
+                        .then((savedPost) => res.status(201).json({ message: 'Post crée', postId: savedPost._id, imageInChat : savedPost.imageInChat }))
                         .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
                 })
                 .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }))
