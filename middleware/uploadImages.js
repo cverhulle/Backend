@@ -63,7 +63,7 @@ const uploadMiddleware = (req, res, next) => {
                             return res.status(500).json({ message: 'Erreur lors du téléchargement du fichier.' });
                         }
                         req.filePath = filePath; 
-                        formData.imageToSend = filePath
+                        formData.fullPath = filePath
                         next(); 
                     });
                 } else {

@@ -186,6 +186,7 @@ exports.savePostImage = (req, res, next) => {
     const { currentUserId, otherUserId, username, content, image, fullPath } = req.body;
     
     if (!currentUserId || !otherUserId || !username || !content || !image || !fullPath) {
+        console.log(req.body)
         return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
     }
 
