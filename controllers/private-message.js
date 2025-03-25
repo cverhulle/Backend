@@ -191,7 +191,7 @@ exports.savePostImage = (req, res, next) => {
     }
 
     const imageName = path.basename(fullPath)
-    const imageToSend = `/images/${imageName}`
+    const imageToSend = `http://localhost:3000/images/${imageName}`
     console.log(imageName)
     console.log(imageToSend)
 
