@@ -1,6 +1,7 @@
 const User = require ('../models/user')
 const Post = require ('../models/post');
 const post = require('../models/post');
+const path= require('path')
 
 // Cette méthode retourne les utilisateurs, à l'exception de celui qui fait la requete, en fonction de l'entrée formulée.
 exports.queryUsers = (req, res, next) => {
