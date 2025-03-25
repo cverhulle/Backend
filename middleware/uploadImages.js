@@ -67,7 +67,7 @@ const uploadMiddleware = (req, res, next) => {
                         next(); 
                     });
                 } else {
-                    // Extrait les autres champs
+                    // On extrait les autres champs
                     const nameMatch = part.match(/name="([^"]+)"/);
                     const name = nameMatch ? nameMatch[1] : null;
                     const start = part.indexOf('\r\n\r\n') + 4;
