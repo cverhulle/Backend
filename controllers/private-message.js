@@ -183,11 +183,14 @@ exports.updatePost = (req, res, next) => {
 }
 
 exports.savePostImage = (req, res, next) => {
-    const { currentUserId, otherUserId, username, content, image, imageToSend } = req.body;
+    const { currentUserId, otherUserId, username, content, image, fullPath } = req.body;
     
-    if (!currentUserId || !otherUserId || !username || !content || !image || !imageToSend) {
+    if (!currentUserId || !otherUserId || !username || !content || !image || !fullPath) {
         return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
     }
+
+    const imageName = path.basename(fullPath)
+    const imageToSend = `/images/${imageName}`
 
     Post.init()
         .then( async () => {
