@@ -30,6 +30,7 @@ const uploadMiddleware = (req, res, next) => {
             // On crée un objet pour stocker les données.
             const formData = {};
 
+            // Cette variable suit si une image est détectée ou non.
             let fileFound = false
 
             // Pour chaque partie...
@@ -38,6 +39,7 @@ const uploadMiddleware = (req, res, next) => {
                 // Si la partie contient un fichier...
                 if (part.includes('filename=')) {
 
+                    // Une image est trouvée, on passe à True
                     fileFound = true
 
                     // On extrait le nom du fichier
@@ -86,6 +88,7 @@ const uploadMiddleware = (req, res, next) => {
             // On sauvegarde les données du formData dans req.body.
             req.body = formData;
 
+            // On passe au controller suivant même si aucune image n'est trouvée.
             if (!fileFound) {
                 next();
             }
