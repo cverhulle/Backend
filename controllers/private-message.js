@@ -182,6 +182,7 @@ exports.updatePost = (req, res, next) => {
         .catch(error => res.status(500).json({error}))
 }
 
+// Cette méthode est utilisée pour envoyer un post contenant une image.
 exports.savePostImage = (req, res, next) => {
     const { currentUserId, otherUserId, username, content, image, fullPath } = req.body;
     
