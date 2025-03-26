@@ -141,7 +141,7 @@ exports.getPreviousPosts = (req, res, next) => {
         .catch(error => res.status(500).json({ message: 'Erreur lors de la récupération des posts' }));
 }
 
-
+// Cette méthode permet de supprimer un post sur le serveur.
 exports.deletePost = (req, res, next) => {
     try{
         // On récupère le postId.
