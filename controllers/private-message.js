@@ -226,5 +226,46 @@ exports.savePostImage = (req, res, next) => {
 }
 
 exports.savePostImageTest = (req, res, next) => {
-    console.log('test')
-}
+    const { currentUserId, otherUserId, username, content, image } = req.body;
+    const fullPath = req.filePath; // Chemin de l'image, s'il y en a une
+
+    // Vérification des champs requis
+    if (!currentUserId || !otherUserId || !username || !content || !image) {
+        console.log(req.body);
+        return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
+    }
+
+    let imageToSend = null;
+
+    // Si une image a été uploadée, on construit l'URL de l'image
+    if (fullPath) {
+        const imageName = path.basename(fullPath);
+        imageToSend = `http://localhost:3000/images/${imageName}`;
+    }
+
+    Post.init()
+        .then(async () => {
+            // Création du post
+            const post = new Post({
+                postId: 'attente', // Placeholder jusqu'à la sauvegarde
+                currentUserId: currentUserId,
+                otherUserId: otherUserId,
+                username: username,
+                image: image, 
+                content: content,
+                timestamp: new Date(),
+                imageInChat: imageToSend // URL de l'image si elle existe
+            });
+
+            post.save()
+                .then((savedPost) => {
+                    // Mise à jour de postId avec l'ID du post nouvellement créé
+                    savedPost.postId = savedPost._id;
+                    savedPost.save()
+                        .then((savedPost) => res.status(201).json({ message: 'Post créé', postId: savedPost._id, imageInChat: savedPost.imageInChat }))
+                        .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
+                })
+                .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
+        })
+        .catch(error => res.status(400).json({ message: "Erreur dans l'initialisation du modèle" }));
+};
