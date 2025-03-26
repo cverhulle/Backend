@@ -12,6 +12,7 @@ router.get('/getPosts', auth, privateMessageCtrl.getPosts)
 router.get('/getPosts/previous', auth, privateMessageCtrl.getPreviousPosts)
 router.post('/post', auth, privateMessageCtrl.savePost)
 router.post('/send-message-image', auth, uploadImages, privateMessageCtrl.savePostImage)
+router.post('/send-message-image-test', auth, uploadImages, privateMessageCtrl.savePostImageTest)
 router.delete('/deletePost', auth, privateMessageCtrl.deletePost)
 router.put('/updatePost', auth, privateMessageCtrl.updatePost)
 
