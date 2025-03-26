@@ -224,3 +224,7 @@ exports.savePostImage = (req, res, next) => {
         })    
         .catch(error => res.status(400).json( {message: "Erreur dans l'initialistion du modèle"} ))
 }
+
+exports.savePostImageTest = (req, res, next) => {
+    console.log('test')
+}
