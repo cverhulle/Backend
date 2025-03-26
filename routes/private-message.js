@@ -10,7 +10,7 @@ const uploadImages = require('../middleware/uploadImages')
 router.get('/queryUsers', auth, privateMessageCtrl.queryUsers)
 router.get('/getPosts', auth, privateMessageCtrl.getPosts)
 router.get('/getPosts/previous', auth, privateMessageCtrl.getPreviousPosts)
-router.post('/send-message', auth, uploadImages, privateMessageCtrl.savePostImageTest)
+router.post('/send-message', auth, uploadImages, privateMessageCtrl.savePost)
 router.delete('/deletePost', auth, privateMessageCtrl.deletePost)
 router.put('/updatePost', auth, privateMessageCtrl.updatePost)
 

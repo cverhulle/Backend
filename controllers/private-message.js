@@ -30,42 +30,53 @@ exports.queryUsers = (req, res, next) => {
 
 }
 
-// Cette méthode permet de sauvegarder un message dans la base de données.
+// Cette méthode permet de sauvegarder un Post sur le serveur.
 exports.savePost = (req, res, next) => {
-    const { currentUserId, otherUserId, username, image, content, timestamp} = req.body;
-    
-    // On vérifie si les données de la requete sont correctes.
-    if ( !currentUserId || !otherUserId || !username || !image || !content || !timestamp) {
-        return res.status(400).json({ message: 'Tous les champs sont requis.' });
+    const { currentUserId, otherUserId, username, content, image } = req.body;
+    const fullPath = req.filePath; // Chemin de l'image, s'il y en a une
+
+    // Vérification des champs requis
+    if (!currentUserId || !otherUserId || !username || !content || !image) {
+        console.log(req.body);
+        return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
+    }
+
+    let imageToSend = null;
+
+    // Si une image a été uploadée, on construit l'URL de l'image
+    if (fullPath) {
+        const imageName = path.basename(fullPath);
+        imageToSend = `http://localhost:3000/images/${imageName}`;
     }
 
     Post.init()
-        .then( async () => {
+        .then(async () => {
             // Création du post
             const post = new Post({
-                // On met un string en attendant de récupérer l'id du post.
-                postId: 'attente',
-                currentUserId : currentUserId,
-                otherUserId : otherUserId,
-                username : username,
-                image : image,
+                postId: 'attente', // Placeholder jusqu'à la sauvegarde
+                currentUserId: currentUserId,
+                otherUserId: otherUserId,
+                username: username,
+                image: image, 
                 content: content,
-                timestamp: timestamp
-            })
+                timestamp: new Date(),
+                imageInChat: imageToSend // URL de l'image si elle existe
+            });
+
             post.save()
-                .then( (savedPost) => {
-                    // On met à jour le postId avec l'id du post nouvellement crée.
+                .then((savedPost) => {
+                    // Mise à jour de postId avec l'ID du post nouvellement créé
                     savedPost.postId = savedPost._id;
-                    savedPost.save()                
-                        // On retourne postId pour le front. 
-                        .then((savedPost) => res.status(201).json({ message: 'Post crée', postId: savedPost._id }))
+                    savedPost.save()
+                        .then((savedPost) => res.status(201).json({ message: 'Post créé', postId: savedPost._id, imageInChat: savedPost.imageInChat }))
                         .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
                 })
-                .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }))
-                
-        })    
-        .catch(error => res.status(400).json( {message: "Erreur dans l'initialistion du modèle"} ))
-}
+                .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
+        })
+        .catch(error => res.status(400).json({ message: "Erreur dans l'initialisation du modèle" }));
+};
+
+
 
 // Cette méthode permet de récupérer tous les messages entre deux utilisateurs.
 exports.getPosts = (req, res, next) => {
@@ -182,90 +193,5 @@ exports.updatePost = (req, res, next) => {
         .catch(error => res.status(500).json({error}))
 }
 
-// Cette méthode est utilisée pour envoyer un post contenant une image.
-exports.savePostImage = (req, res, next) => {
-    const { currentUserId, otherUserId, username, content, image, fullPath } = req.body;
-    
-    if (!currentUserId || !otherUserId || !username || !content || !image || !fullPath) {
-        console.log(req.body)
-        return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
-    }
 
-    const imageName = path.basename(fullPath)
-    const imageToSend = `http://localhost:3000/images/${imageName}`
-    console.log(imageName)
-    console.log(imageToSend)
 
-    Post.init()
-        .then( async () => {
-            // Création du post
-            const post = new Post({
-                // On met un string en attendant de récupérer l'id du post.
-                postId: 'attente',
-                currentUserId : currentUserId,
-                otherUserId : otherUserId,
-                username : username,
-                image : image,
-                content: content,
-                timestamp: new Date(),
-                imageInChat : imageToSend
-            })
-            post.save()
-                .then( (savedPost) => {
-                    // On met à jour le postId avec l'id du post nouvellement crée.
-                    savedPost.postId = savedPost._id;
-                    savedPost.save()                
-                        // On retourne postId pour le front. 
-                        .then((savedPost) => res.status(201).json({ message: 'Post crée', postId: savedPost._id, imageInChat : savedPost.imageInChat }))
-                        .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
-                })
-                .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }))
-                
-        })    
-        .catch(error => res.status(400).json( {message: "Erreur dans l'initialistion du modèle"} ))
-}
-
-exports.savePostImageTest = (req, res, next) => {
-    const { currentUserId, otherUserId, username, content, image } = req.body;
-    const fullPath = req.filePath; // Chemin de l'image, s'il y en a une
-
-    // Vérification des champs requis
-    if (!currentUserId || !otherUserId || !username || !content || !image) {
-        console.log(req.body);
-        return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
-    }
-
-    let imageToSend = null;
-
-    // Si une image a été uploadée, on construit l'URL de l'image
-    if (fullPath) {
-        const imageName = path.basename(fullPath);
-        imageToSend = `http://localhost:3000/images/${imageName}`;
-    }
-
-    Post.init()
-        .then(async () => {
-            // Création du post
-            const post = new Post({
-                postId: 'attente', // Placeholder jusqu'à la sauvegarde
-                currentUserId: currentUserId,
-                otherUserId: otherUserId,
-                username: username,
-                image: image, 
-                content: content,
-                timestamp: new Date(),
-                imageInChat: imageToSend // URL de l'image si elle existe
-            });
-
-            post.save()
-                .then((savedPost) => {
-                    // Mise à jour de postId avec l'ID du post nouvellement créé
-                    savedPost.postId = savedPost._id;
-                    savedPost.save()
-                        .then((savedPost) => res.status(201).json({ message: 'Post créé', postId: savedPost._id, imageInChat: savedPost.imageInChat }))
-                        .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
-                })
-                .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
-        })
-        .catch(error => res.status(400).json({ message: "Erreur dans l'initialisation du modèle" }));
-};
