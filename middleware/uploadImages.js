@@ -30,11 +30,15 @@ const uploadMiddleware = (req, res, next) => {
             // On crée un objet pour stocker les données.
             const formData = {};
 
+            let fileFound = false
+
             // Pour chaque partie...
             parts.forEach(part => {
 
                 // Si la partie contient un fichier...
                 if (part.includes('filename=')) {
+
+                    fileFound = true
 
                     // On extrait le nom du fichier
                     const filenameMatch = part.match(/filename="([^"]+)"/);
@@ -81,6 +85,10 @@ const uploadMiddleware = (req, res, next) => {
             })
             // On sauvegarde les données du formData dans req.body.
             req.body = formData;
+
+            if (!fileFound) {
+                next();
+            }
         });
 
         // On gère l'erreur lors de la réception des données
