@@ -166,16 +166,16 @@ exports.deletePost = (req, res, next) => {
 
 // Cette méthode permet de modifier le contenu d'un post.
 exports.updatePost = (req, res, next) => {
-    // On récupère l'id du post, le nouveau contenu, l'eventuelle modification sur l'image du chat. 
+    // On récupère l'id du post, le nouveau contenu.
     const postId = req.body.postId;
     const newContent = req.body.content
-    const newImageInChat = req.body.imageInChat
+    
 
     const currentUserId = req.auth.userId;
 
     // Vérification que postId et newContent sont présents
-    if (!postId || !newContent || !newImageInChat) {
-        return res.status(400).json({ message: "ID du post, contenu et variable d'image dans le chat requis" });
+    if (!postId || !newContent) {
+        return res.status(400).json({ message: "ID du post et contenu requis " });
     }
     
 
