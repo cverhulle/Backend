@@ -166,22 +166,37 @@ exports.deletePost = (req, res, next) => {
 
 // Cette méthode permet de modifier le contenu d'un post.
 exports.updatePost = (req, res, next) => {
-    // On récupère l'id du post et le nouveau contenu.
+    // On récupère l'id du post, le nouveau contenu, l'eventuelle modification sur l'image du chat. 
     const postId = req.body.postId;
     const newContent = req.body.content
     const newImageInChat = req.body.imageInChat
+
     const currentUserId = req.auth.userId;
 
     // Vérification que postId et newContent sont présents
-    if (!postId || !newContent) {
-        return res.status(400).json({ message: "ID du post et contenu requis" });
+    if (!postId || !newContent || !newImageInChat) {
+        return res.status(400).json({ message: "ID du post, contenu et variable d'image dans le chat requis" });
     }
+    
+
+    // On récupre le chemin de la nouvelle image dans le post si elle existe.
+    const fullPath = req.filePath; 
+    let imageToSend = null;
+
+    // Si une image a été uploadée, on construit l'URL de l'image
+    if (fullPath) {
+        const imageName = path.basename(fullPath);
+        imageToSend = `http://localhost:3000/images/${imageName}`;
+    }
+
+
+
 
     Post.findOneAndUpdate( 
         // Arguments pour rechercher le post.
         {currentUserId : currentUserId, _id : postId},
         // Contenu à modifier
-        {content : newContent, imageInChat: newImageInChat},
+        {content : newContent, imageInChat: imageToSend},
         // On ajoute cette ligne pour que le updatedPost dans le .then ait les modifications.
         {new : true}
     )
