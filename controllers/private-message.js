@@ -169,6 +169,7 @@ exports.updatePost = (req, res, next) => {
     // On récupère l'id du post et le nouveau contenu.
     const postId = req.body.postId;
     const newContent = req.body.content
+    const newImageInChat = req.body.imageInChat
     const currentUserId = req.auth.userId;
 
     // Vérification que postId et newContent sont présents
@@ -180,7 +181,7 @@ exports.updatePost = (req, res, next) => {
         // Arguments pour rechercher le post.
         {currentUserId : currentUserId, _id : postId},
         // Contenu à modifier
-        {content : newContent},
+        {content : newContent, imageInChat: newImageInChat},
         // On ajoute cette ligne pour que le updatedPost dans le .then ait les modifications.
         {new : true}
     )
