@@ -170,7 +170,6 @@ exports.updatePost = (req, res, next) => {
     const postId = req.body.postId;
     const newContent = req.body.content
     
-
     const currentUserId = req.auth.userId;
 
     // Vérification que postId et newContent sont présents
