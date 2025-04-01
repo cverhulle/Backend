@@ -79,3 +79,8 @@ exports.usernameTaken = (req,res,next) => {
     })
     .catch(() => res.status(400).json({ message : "Erreur dans la recherche" }))
 };
+
+// Méthode pour supprimer le compte d'un utilisateur
+exports.deleteAccount = (req,res,next) => {
+  console.log('Test')
+}

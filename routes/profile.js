@@ -10,6 +10,7 @@ router.put('/modify', auth, profileCtrl.modifyProfile)
 router.put('/modifyPassword', auth, profileCtrl.modifyPassword)
 router.post('/email', auth, profileCtrl.emailTaken)
 router.post('/username', auth, profileCtrl.usernameTaken)
+router.delete('/deleteAccount', auth, profileCtrl.deleteAccount)
 
 
 module.exports = router;
