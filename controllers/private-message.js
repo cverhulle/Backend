@@ -15,6 +15,7 @@ exports.queryUsers = (req, res, next) => {
         // On selectionne les champs à retourner
         .select('loginInfo.username image')
 
+        // On limite à 10 le nombre maximal d'utilisateurs affichés
         .limit(10)
 
         .then(users => {
