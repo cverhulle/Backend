@@ -82,5 +82,11 @@ exports.usernameTaken = (req,res,next) => {
 
 // Méthode pour supprimer le compte d'un utilisateur
 exports.deleteAccount = (req,res,next) => {
-  console.log('Test')
+  try{
+    const userId = req.auth.userId
+    User.findByIdAndDelete(userId)
+    return res.status(200).json({message : "Compte supprimé avec succès"})
+  } catch (error) {
+    return res.status(500).json({message : 'Erreur lors de la suppression du compte'})
+  }
 }
