@@ -81,13 +81,13 @@ exports.usernameTaken = (req,res,next) => {
 };
 
 // Méthode pour supprimer le compte d'un utilisateur
-exports.deleteAccount = (req,res,next) => {
+exports.deleteAccount = async (req,res,next) => {
   try{
     // On récupère l'id de l'utilisateur dans le token
     const userId = req.auth.userId
 
     // On supprime l'utilisateur par son Id
-    User.findByIdAndDelete(userId)
+    await User.findByIdAndDelete(userId)
 
     // On retourne un succès
     return res.status(200).json({message : "Compte supprimé avec succès"})
