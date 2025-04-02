@@ -15,6 +15,8 @@ exports.queryUsers = (req, res, next) => {
         // On selectionne les champs à retourner
         .select('loginInfo.username image')
 
+        .limit(10)
+
         .then(users => {
             
             // Avec le select seul, username est "coincé" comme paramètre d'un objet loginInfo.
