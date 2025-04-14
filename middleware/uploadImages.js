@@ -81,7 +81,18 @@ const uploadMiddleware = (req, res, next) => {
 
                     if (name) {
                         const value = part.slice(start, end).trim();
-                        formData[name] = value; 
+                        // Si c'est un champ de type tableau
+                        if (name === 'groupLanguages' || name === 'groupCategories') {
+                            if (formData[name]) {
+                                formData[name] = Array.isArray(formData[name])
+                                    ? [...formData[name], value]
+                                    : [formData[name], value];
+                            } else {
+                                formData[name] = value;
+                            }
+                        } else {
+                            formData[name] = value;
+                        }
                     }
                 }
             })
