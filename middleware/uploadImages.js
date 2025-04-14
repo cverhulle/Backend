@@ -97,13 +97,16 @@ const uploadMiddleware = (req, res, next) => {
                 }
             })
 
+            // Dans le cas où le groupLanguages ne contient qu'une donnée, on le transforme en tableau
             if (typeof formData.groupLanguages === 'string') {
                 formData.groupLanguages = [formData.groupLanguages];
             }
+
+            // Dans le cas où le groupCategories ne contient qu'une donnée, on le transforme en tableau
             if (typeof formData.groupCategories === 'string') {
                 formData.groupCategories = [formData.groupCategories];
             }
-            
+
             // On sauvegarde les données du formData dans req.body.
             req.body = formData;
 
