@@ -25,12 +25,14 @@ exports.createGroup = (req,res,next) => {
     const imageName = path.basename(fullPath);
     const groupLogo = `http://localhost:3000/images/${imageName}`;
 
+    // On initialise le modèle pour que MongoDB prenne en compte les champs required etc..
     GroupMessage.init()
         .then( async () => {
             const newGroup = new GroupMessage({
                 groupName : groupName,
                 groupDescription : groupDescription,
                 groupType : groupType,
+                // On ajoute le mot de passe que si le groupe est restreint
                 groupPassword : groupType === 'Restreint' ? groupPassword : null,
                 groupLanguages : groupLanguages,
                 groupCategories : groupCategories,
@@ -39,9 +41,10 @@ exports.createGroup = (req,res,next) => {
                 members : [userId]
             });
 
+            // On sauvegarde le groupe
             newGroup.save()
-                .then(() => res.status(201).json({ message: 'groupe créé'}))
-                .catch( (savedGroup) => res.status(400).json({ message: 'Erreur lors de la sauvegarde du groupe', group: savedGroup }))
+                .then(() => res.status(201).json({ message: 'groupe créé', group: savedGroup}))
+                .catch( (savedGroup) => res.status(400).json({ message: 'Erreur lors de la sauvegarde du groupe'}))
         })
         .catch( () => res.status(500).json({ message: "Erreur lors de l'initialisation du modèle" }))
 }
