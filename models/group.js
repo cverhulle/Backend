@@ -45,6 +45,8 @@ const groupMessageSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    // On sauvegarde le créateur du groupe
+    creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     // On gère les membres du groupe
     members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 });
