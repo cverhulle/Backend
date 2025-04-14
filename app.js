@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/user');
 const profileRoutes = require('./routes/profile');
 const privateMessageRoutes = require('./routes/private-message')
+const groupMessageRoutes = require('./routes/group-message')
 require('dotenv').config()
 
 
