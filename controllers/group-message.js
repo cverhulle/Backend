@@ -1,5 +1,6 @@
 const GroupMessage = require('../models/group')
 const path = require('path')
+const bcrypt = require('bcrypt');
 
 exports.createGroup = (req,res,next) => {
     // On récupère les données du formulaire.
@@ -24,6 +25,9 @@ exports.createGroup = (req,res,next) => {
     // On gère le chemin de l'image (pour la récupèrer depuis le serveur localhost:\\3000)
     const imageName = path.basename(fullPath);
     const groupLogo = `http://localhost:3000/images/${imageName}`;
+
+    // On crée une variable pour stocker le mot de passe hashé (null s'il n'y en a pas)
+    let hashedPassword = null;
 
     // On initialise le modèle pour que MongoDB prenne en compte les champs required etc..
     GroupMessage.init()
