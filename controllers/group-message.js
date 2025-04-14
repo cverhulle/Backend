@@ -38,11 +38,11 @@ exports.createGroup = (req,res,next) => {
                 hashedPassword = await bcrypt.hash(groupPassword, 10);
             }
 
+            // Création du groupe avec le modèle mongoose
             const newGroup = new GroupMessage({
                 groupName : groupName,
                 groupDescription : groupDescription,
                 groupType : groupType,
-                // On ajoute le mot de passe que si le groupe est restreint
                 groupPassword : hashedPassword,
                 groupLanguages : groupLanguages,
                 groupCategories : groupCategories,
