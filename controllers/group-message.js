@@ -13,8 +13,11 @@ exports.createGroup = (req,res,next) => {
         fullPath
     } = req.body
 
+    // On récupère l'id de l'utilisateur actuel
+    const userId = req.auth.userId
+
     // Vérification des champs requis
-    if (!groupName || !groupDescription || !groupType || !groupLanguages || !groupCategories || !fullPath) {
+    if (!groupName || !groupDescription || !groupType || !groupLanguages || !groupCategories || !fullPath || !userId) {
          return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
     }
 
