@@ -24,4 +24,20 @@ exports.createGroup = (req,res,next) => {
     // On gère le chemin de l'image (pour la récupèrer depuis le serveur localhost:\\3000)
     const imageName = path.basename(fullPath);
     const groupLogo = `http://localhost:3000/images/${imageName}`;
+
+    GroupMessage.init()
+        .then( () => {
+            const newGroup = new GroupMessage({
+                groupName : groupName,
+                groupDescription : groupDescription,
+                groupType : groupType,
+                groupPassword : groupType === 'Restreint' ? groupPassword : null,
+                groupLanguages : groupLanguages,
+                groupCategories : groupCategories,
+                groupLogo : groupLogo,
+                creator : userId,
+                members : [userId]
+            })
+        })
+        .catch( () => res.status(500).json({ message: 'Erreur lors de la création du groupe' }))
 }
