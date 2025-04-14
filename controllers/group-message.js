@@ -40,8 +40,8 @@ exports.createGroup = (req,res,next) => {
             });
 
             newGroup.save()
-                .then()
-                .catch()
+                .then(() => res.status(201).json({ message: 'groupe créé'}))
+                .catch( (savedGroup) => res.status(400).json({ message: 'Erreur lors de la sauvegarde du groupe', group: savedGroup }))
         })
-        .catch( () => res.status(500).json({ message: 'Erreur lors de la création du groupe' }))
+        .catch( () => res.status(500).json({ message: "Erreur lors de l'initialisation du modèle" }))
 }
