@@ -32,12 +32,18 @@ exports.createGroup = (req,res,next) => {
     // On initialise le modèle pour que MongoDB prenne en compte les champs required etc..
     GroupMessage.init()
         .then( async () => {
+
+            // Si le type de groupe est restreint, on stocke le mot de passe hashé (sinon, il reste à null)
+            if (groupType === 'Restreint' && groupPassword) {
+                hashedPassword = await bcrypt.hash(groupPassword, 10);
+            }
+
             const newGroup = new GroupMessage({
                 groupName : groupName,
                 groupDescription : groupDescription,
                 groupType : groupType,
                 // On ajoute le mot de passe que si le groupe est restreint
-                groupPassword : groupType === 'Restreint' ? groupPassword : null,
+                groupPassword : hashedPassword,
                 groupLanguages : groupLanguages,
                 groupCategories : groupCategories,
                 groupLogo : groupLogo,
