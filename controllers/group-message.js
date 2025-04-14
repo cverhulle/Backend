@@ -11,4 +11,10 @@ exports.createGroup = (req,res,next) => {
         groupPassword
     } = req.body
 
+    const fullPath = req.filePath;
+    
+    // Vérification des champs requis
+    if (!groupName || !groupDescription || !groupType || !groupLanguages || !groupCategories || !fullPath) {
+         return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
+    }
 }
