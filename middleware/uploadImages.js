@@ -96,6 +96,14 @@ const uploadMiddleware = (req, res, next) => {
                     }
                 }
             })
+
+            if (typeof formData.groupLanguages === 'string') {
+                formData.groupLanguages = [formData.groupLanguages];
+            }
+            if (typeof formData.groupCategories === 'string') {
+                formData.groupCategories = [formData.groupCategories];
+            }
+            
             // On sauvegarde les données du formData dans req.body.
             req.body = formData;
 
