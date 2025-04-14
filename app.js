@@ -41,6 +41,7 @@ app.use((req, res, next) => {
 app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/private-message', privateMessageRoutes);
+app.use('/api/group-message', groupMessageRoutes);
 
 
 
