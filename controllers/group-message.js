@@ -26,7 +26,7 @@ exports.createGroup = (req,res,next) => {
     const groupLogo = `http://localhost:3000/images/${imageName}`;
 
     GroupMessage.init()
-        .then( () => {
+        .then( async () => {
             const newGroup = new GroupMessage({
                 groupName : groupName,
                 groupDescription : groupDescription,
@@ -37,7 +37,11 @@ exports.createGroup = (req,res,next) => {
                 groupLogo : groupLogo,
                 creator : userId,
                 members : [userId]
-            })
+            });
+
+            newGroup.save()
+                .then()
+                .catch()
         })
         .catch( () => res.status(500).json({ message: 'Erreur lors de la création du groupe' }))
 }
