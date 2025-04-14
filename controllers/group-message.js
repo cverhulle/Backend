@@ -9,12 +9,10 @@ exports.createGroup = (req,res,next) => {
         groupType,
         groupLanguages,
         groupCategories,
-        groupPassword
+        groupPassword,
+        fullPath
     } = req.body
 
-    // On récupère le chemin de l'image.
-    const fullPath = req.filePath;
-    
     // Vérification des champs requis
     if (!groupName || !groupDescription || !groupType || !groupLanguages || !groupCategories || !fullPath) {
          return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
