@@ -2,6 +2,7 @@ const GroupMessage = require('../models/group')
 const path = require('path')
 
 exports.createGroup = (req,res,next) => {
+    // On récupère les données du formulaire.
     const {
         groupName,
         groupDescription,
@@ -11,6 +12,7 @@ exports.createGroup = (req,res,next) => {
         groupPassword
     } = req.body
 
+    // On récupère le chemin de l'image.
     const fullPath = req.filePath;
     
     // Vérification des champs requis
