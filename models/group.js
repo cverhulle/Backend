@@ -44,7 +44,9 @@ const groupMessageSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+    // On gère les membres du groupe
+    members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 });
 
 module.exports = mongoose.model('GroupMessage', groupMessageSchema);
