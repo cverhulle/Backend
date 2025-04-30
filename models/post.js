@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Ce modèle permet de sauvegarder un post entre deux utilisateurs en chat privé
 const postSchema = new mongoose.Schema({
     postId: {type : String, required : true},
     currentUserId: {type : String, required : true},
