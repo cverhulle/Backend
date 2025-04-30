@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// Ce modèle permet de sauvegarder les données d'un groupe de discussion 
 const groupMessageSchema = new mongoose.Schema({
     // On sauvegarde le nom du groupe.
     groupName: {
