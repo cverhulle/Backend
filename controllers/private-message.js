@@ -15,6 +15,9 @@ exports.queryUsers = (req, res, next) => {
         // On selectionne les champs à retourner
         .select('loginInfo.username image')
 
+        // On trie en ne distinguant pas les majuscules ni les accents (A = a = À = à)
+        .collation({ locale: 'en', strength: 1 })
+
         // On trie les résultats par ordre alphabétique
         .sort({ 'loginInfo.username': 1 })
 
