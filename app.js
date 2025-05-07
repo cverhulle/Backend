@@ -38,7 +38,7 @@ app.use((req, res, next) => {
 });
 
 
-
+// Redirection vers les différentes "grandes routes" de l'application
 app.use('/api/users', userRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/private-message', privateMessageRoutes);
