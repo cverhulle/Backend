@@ -59,12 +59,17 @@ exports.createGroup = (req,res,next) => {
         .catch( () => res.status(500).json({ message: "Erreur lors de l'initialisation du modèle" }))
 }
 
-
+// Cette méthode permet de récupérer les groupes de l'utilisateur
 exports.myGroup = (req,res,next) =>{
+
+    // On récupère l'userId dans le token
     const userId = req.auth.userId
 
+    // On cherche les groupes contenant l'userId dans les membres
     GroupMessage.find({members : userId})
         .then( groups => {
+
+            // On retourne les groupes dans un JSON
             res.status(200).json(groups)
         })
         .catch( () => res.status(500).json( { message : "Erreur lors de la recherhche"}))
