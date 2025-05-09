@@ -70,11 +70,13 @@ exports.myGroup = (req,res,next) =>{
 
         // On retire le mot de passe de la réponse au frontend
         .select('-groupPassword')
-        
+
+        // On récupère les informations sur les membres
+        .populate('members', 'username image')
+
         .then( groups => {
 
             // On retourne les groupes dans un JSON
-            console.log(groups)
             res.status(200).json(groups)
         })
         .catch( () => res.status(500).json( { message : "Erreur lors de la recherhche"}))
