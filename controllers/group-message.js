@@ -61,5 +61,11 @@ exports.createGroup = (req,res,next) => {
 
 
 exports.myGroup = (req,res,next) =>{
-    console.log('test')
+    const userId = req.auth.userId
+
+    GroupMessage.find({members : userId})
+        .then( groups => {
+            res.status(200).json(groups)
+        })
+        .catch( () => res.status(500).json( { message : "Erreur lors de la recherhche"}))
 }
