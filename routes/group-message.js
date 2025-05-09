@@ -5,9 +5,10 @@ const uploadImages = require('../middleware/uploadImages')
 const groupMessageCtrl = require('../controllers/group-message')
 
 // Route qui permet de créer un groupe
-router.post('/create-group', auth, uploadImages, groupMessageCtrl.createGroup)
+router.post('/create-group', auth, uploadImages, groupMessageCtrl.createGroup);
 
-router.get('/my-group', auth, groupMessageCtrl.myGroup)
+// Route permettant de récupérer les groupes de l'utilisateur
+router.get('/my-group', auth, groupMessageCtrl.myGroup);
 
 
 module.exports = router;
