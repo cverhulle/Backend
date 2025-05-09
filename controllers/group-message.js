@@ -58,3 +58,8 @@ exports.createGroup = (req,res,next) => {
         })
         .catch( () => res.status(500).json({ message: "Erreur lors de l'initialisation du modèle" }))
 }
+
+
+exports.myGroup = (req,res,next) =>{
+    console.log('test')
+}
