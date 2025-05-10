@@ -71,6 +71,9 @@ exports.myGroup = (req,res,next) =>{
         // On retire le mot de passe de la réponse au frontend
         .select('-groupPassword')
 
+        // On récupère les informations sur le créateur
+        .populate('creator', 'username image')
+
         // On récupère les informations sur les membres
         .populate('members', 'username image')
 
