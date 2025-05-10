@@ -46,7 +46,7 @@ exports.createGroup = (req,res,next) => {
                 groupPassword : hashedPassword,
                 groupLanguages : groupLanguages,
                 groupCategories : groupCategories,
-                groupLogo : groupLogo,
+                groupLogoPath : groupLogo,
                 creator : userId,
                 members : [userId]
             });
