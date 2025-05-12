@@ -72,10 +72,10 @@ exports.myGroup = (req,res,next) =>{
         .select('-groupPassword')
 
         // On récupère les informations sur le créateur
-        .populate('creator', 'username image')
+        .populate('creator', 'loginInfo.username image')
 
         // On récupère les informations sur les membres
-        .populate('members', 'username image')
+        .populate('members', 'loginInfo.username image')
 
         .then( groups => {
 
