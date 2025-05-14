@@ -10,5 +10,7 @@ router.post('/create-group', auth, uploadImages, groupMessageCtrl.createGroup);
 // Route permettant de récupérer les groupes de l'utilisateur
 router.get('/my-group', auth, groupMessageCtrl.myGroup);
 
+// Route permettant de récupérer les messages d'une discussion
+router.get('/getPreviousPosts', auth, groupMessageCtrl.getPreviousPosts)
 
 module.exports = router;
