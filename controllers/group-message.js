@@ -84,3 +84,8 @@ exports.myGroup = (req,res,next) =>{
         })
         .catch( () => res.status(500).json( { message : "Erreur lors de la recherhche"}))
 }
+
+// Cette méthode permet de récupérer les 10 derniers messages entre deux utilisateurs.
+exports.getPreviousPosts = (req, res, next) => {
+    console.log('test')
+}
