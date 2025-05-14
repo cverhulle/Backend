@@ -116,3 +116,8 @@ exports.getPreviousPosts = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ message: 'Erreur lors de la récupération des posts' }));
 }
+
+// Cette méthode permet de sauvegarder un Post sur le serveur.
+exports.savePost = (req, res, next) => {
+    console.log('test')
+};
