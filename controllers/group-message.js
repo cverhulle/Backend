@@ -119,5 +119,45 @@ exports.getPreviousPosts = (req, res, next) => {
 
 // Cette méthode permet de sauvegarder un Post sur le serveur.
 exports.savePost = (req, res, next) => {
-    console.log('test')
+    const { groupId, senderId, senderUsername, senderProfileImage, content } = req.body;
+    const fullPath = req.filePath; // Chemin de l'image, s'il y en a une
+
+    // Vérification des champs requis
+    if ( !groupId || !senderId || !senderUsername || !senderProfileImage || !content ) {
+        return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
+    }
+
+    let imageToSend = null;
+
+    // Si une image a été uploadée, on construit l'URL de l'image
+    if (fullPath) {
+        const imageName = path.basename(fullPath);
+        imageToSend = `http://localhost:3000/images/${imageName}`;
+    }
+
+    GroupPost.init()
+        .then(async () => {
+            // Création du post
+            const groupPost = new GroupPost({
+                postId: 'attente', // Placeholder jusqu'à la sauvegarde
+                groupId: groupId,
+                senderId: senderId,
+                senderUsername : senderUsername,
+                senderProfileImage: senderProfileImage,
+                content : content,
+                timestamp: new Date(),
+                imageInChat: imageToSend // URL de l'image si elle existe
+            });
+
+            groupPost.save()
+                .then((savedPost) => {
+                    // Mise à jour de postId avec l'ID du post nouvellement créé
+                    savedPost.postId = savedPost._id;
+                    savedPost.save()
+                        .then((savedPost) => res.status(201).json({ message: 'GroupPost créé', postId: savedPost._id, imageInChat: savedPost.imageInChat }))
+                        .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
+                })
+                .catch(error => res.status(400).json({ message: 'Erreur lors de la sauvegarde du post' }));
+        })
+        .catch(error => res.status(400).json({ message: "Erreur dans l'initialisation du modèle" }));
 };
