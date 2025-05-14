@@ -13,4 +13,7 @@ router.get('/my-group', auth, groupMessageCtrl.myGroup);
 // Route permettant de récupérer les messages d'une discussion
 router.get('/getPreviousPosts', auth, groupMessageCtrl.getPreviousPosts)
 
+// Route permettant d'envoyer un message dans le chat
+router.get('/send-message', auth, uploadImages, groupMessageCtrl.savePost)
+
 module.exports = router;
