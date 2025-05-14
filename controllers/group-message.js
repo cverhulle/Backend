@@ -1,6 +1,7 @@
 const GroupMessage = require('../models/group')
 const path = require('path')
 const bcrypt = require('bcrypt');
+const GroupPost = require('../models/groupPost')
 
 exports.createGroup = (req,res,next) => {
     // On récupère les données du formulaire.
@@ -87,5 +88,31 @@ exports.myGroup = (req,res,next) =>{
 
 // Cette méthode permet de récupérer les 10 derniers messages entre deux utilisateurs.
 exports.getPreviousPosts = (req, res, next) => {
-    console.log('test')
+    const groupId = req.query.groupId;
+
+    // On récupère le nombre de messages à ignorer.
+    const skip = parseInt(req.query.skip)
+
+    // On vérifie que otherUserId existe bien dans la requete.
+    if (!groupId) {
+        return res.status(400).json({ message: "L'id du groupe est manquant" });
+    }
+
+    // On cherche les posts contenant l'utilisateur actuel en tant qu'envoyeur ou receveur du message.
+    GroupPost.find({ groupId })
+
+        // On trie par date décroissante.
+        .sort({ timestamp: -1 })
+
+        // On ignore le nombre de messages spécifié dans skip.
+        .skip(skip) 
+
+        // On limite le nombre de messages récupérés à 10.
+        .limit(10) 
+
+        .then(posts => {
+            // On remet les messages du plus récent au plus ancien.
+            res.status(200).json(posts.reverse()); 
+        })
+        .catch(error => res.status(500).json({ message: 'Erreur lors de la récupération des posts' }));
 }
