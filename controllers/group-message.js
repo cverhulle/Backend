@@ -120,7 +120,9 @@ exports.getPreviousPosts = (req, res, next) => {
 // Cette méthode permet de sauvegarder un Post sur le serveur.
 exports.savePost = (req, res, next) => {
     const { groupId, senderId, senderUsername, senderProfileImage, content } = req.body;
-    const fullPath = req.filePath; // Chemin de l'image, s'il y en a une
+
+    // Chemin de l'image, s'il y en a une
+    const fullPath = req.filePath; 
 
     // Vérification des champs requis
     if ( !groupId || !senderId || !senderUsername || !senderProfileImage || !content ) {
