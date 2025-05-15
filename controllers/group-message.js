@@ -129,6 +129,7 @@ exports.savePost = (req, res, next) => {
         return res.status(400).json({ message: 'Tous les champs doivent être remplis.' });
     }
 
+    // On met l'image dans le message à "null" par défaut
     let imageToSend = null;
 
     // Si une image a été uploadée, on construit l'URL de l'image
