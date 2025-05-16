@@ -210,3 +210,8 @@ exports.updatePost = (req, res, next) => {
         })
         .catch(error => res.status(500).json({error}))
 }
+
+// Cette méthode permet de supprimer un post sur le serveur.
+exports.deletePost = (req, res, next) => {
+    console.log('test')
+}
