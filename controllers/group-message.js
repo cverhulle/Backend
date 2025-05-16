@@ -180,31 +180,43 @@ exports.updatePost = (req, res, next) => {
         return res.status(400).json({ message: "ID du post et contenu requis " });
     }
     
-
-    // On récupre le chemin de la nouvelle image dans le post si elle existe.
-    const fullPath = req.filePath; 
-    let imageToSend = null;
-
-    // Si une image a été uploadée, on construit l'URL de l'image
-    if (fullPath) {
-        const imageName = path.basename(fullPath);
-        imageToSend = `http://localhost:3000/images/${imageName}`;
-    }
-
-    GroupPost.findOneAndUpdate( 
-        // Arguments pour rechercher le post.
-        {senderId : senderId, _id : postId},
-        // Contenu à modifier
-        {content : newContent, imageInChat: imageToSend},
-        // On ajoute cette ligne pour que le updatedPost dans le .then ait les modifications.
-        {new : true}
-    )
-        .then((updatedPost) => {
-            if(!updatedPost) {
+    GroupPost.findById(postId)
+        .then( (existingPost) => {
+            if (!existingPost) {
                 return res.status(404).json({message : "Post non trouvé"})
-            } 
-            res.status(200).json(updatedPost)
+            }
+
+            // On récupère le chemin de la nouvelle image dans le post si elle existe.
+            const fullPath = req.filePath; 
+            let imageToSend = null;
+
+            // Si une image a été uploadée, on construit l'URL de l'image
+            if (fullPath) {
+                const imageName = path.basename(fullPath);
+                imageToSend = `http://localhost:3000/images/${imageName}`;
+            // Sinon, on récupère la valeur stockée précédemment
+            } else {
+                imageToSend = existingPost.imageInChat
+            }
+
+            // On met à jour le post
+            GroupPost.findOneAndUpdate( 
+                // Arguments pour rechercher le post.
+                {senderId : senderId, _id : postId},
+                // Contenu à modifier
+                {content : newContent, imageInChat: imageToSend},
+                // On ajoute cette ligne pour que le updatedPost dans le .then ait les modifications.
+                {new : true}
+            )
+                .then((updatedPost) => {
+                    if(!updatedPost) {
+                        return res.status(404).json({message : "Post non trouvé"})
+                    } 
+                    res.status(200).json(updatedPost)
+                })
+                .catch(error => res.status(500).json({error}))
         })
+
         .catch(error => res.status(500).json({error}))
 }
 
