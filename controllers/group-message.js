@@ -218,7 +218,7 @@ exports.deletePost = (req, res, next) => {
         const senderId = req.auth.userId;
 
         // On supprime le post en fonction du currentUserId et du postId.
-        Post.findOneAndDelete({ senderId: senderId, _id : postId })
+        GroupPost.findOneAndDelete({ senderId: senderId, _id : postId })
             .then((deletePost) => {
                 if (!deletePost) {
                     return res.status(404).json({ message: 'Post non trouvé' });
