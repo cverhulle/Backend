@@ -213,5 +213,25 @@ exports.updatePost = (req, res, next) => {
 
 // Cette méthode permet de supprimer un post sur le serveur.
 exports.deletePost = (req, res, next) => {
-    console.log('test')
+    try{
+        // On récupère le postId.
+        const postId = req.query.postId;
+
+        // On récupère l'userId
+        const senderId = req.auth.userId;
+
+        // On supprime le post en fonction du currentUserId et du postId.
+        Post.findOneAndDelete({ senderId: senderId, _id : postId })
+            .then((deletePost) => {
+                if (!deletePost) {
+                    return res.status(404).json({ message: 'Post non trouvé' });
+                }
+                res.status(200).json({ message: 'Post supprimé' });
+            })
+            .catch((error) => {
+                res.status(500).json({ error });
+            });
+    } catch (error) {
+        res.status(500).json({ error });
+    }
 }
