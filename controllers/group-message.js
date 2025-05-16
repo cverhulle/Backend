@@ -196,13 +196,16 @@ exports.updatePost = (req, res, next) => {
                 // L'image est supprimée, mais une nouvelle est uploadée
                 const imageName = path.basename(fullPath);
                 imageToSend = `http://localhost:3000/images/${imageName}`;
+
             } else if (removeImage && !fullPath) {
                 // L'image est supprimée et aucune nouvelle n'est ajoutée
                 imageToSend = null;
+
             } else if (!removeImage && fullPath) {
                 // L'image existante est remplacée sans suppression explicite
                 const imageName = path.basename(fullPath);
                 imageToSend = `http://localhost:3000/images/${imageName}`;
+                
             } else {
                 // Aucun changement : on garde l'image actuelle
                 imageToSend = existingPost.imageInChat;
