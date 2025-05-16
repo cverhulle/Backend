@@ -166,9 +166,6 @@ exports.savePost = (req, res, next) => {
 };
 
 // Cette méthode permet de modifier le contenu d'un post.
-
-// ATTENTION : Double appel intentionnel (et à améliorer ?) : on lit d'abord le post pour connaître l'image existante,
-// puis on met à jour en fonction des données transmises (image conservée, supprimée ou remplacée).
 exports.updatePost = (req, res, next) => {
 
     // On récupère l'id du post, le nouveau contenu.
@@ -177,12 +174,15 @@ exports.updatePost = (req, res, next) => {
 
     // On récupère la varaible nous informant s'il faut supprimer l'image actuelle de l'utilisateur
     const removeImage = req.body.removeImage
+
+    // On récupère l'image actuelle du post à modifier
+    const previousImage = req.body.previousImage;
     
     // On récupère l'userId
     const senderId = req.auth.userId;
 
     // Vérification que postId et newContent sont présents
-    if (!postId || !newContent) {
+    if (!postId || !newContent || !senderId) {
         return res.status(400).json({ message: "ID du post et contenu requis " });
     }
     
