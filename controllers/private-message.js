@@ -174,14 +174,22 @@ exports.deletePost = (req, res, next) => {
 
 // Cette méthode permet de modifier le contenu d'un post.
 exports.updatePost = (req, res, next) => {
+
     // On récupère l'id du post, le nouveau contenu.
     const postId = req.body.postId;
     const newContent = req.body.content
     
+    // On récupère l'id de l'utilisateur actuel 
     const currentUserId = req.auth.userId;
 
+    // On récupère la varaible nous informant s'il faut supprimer l'image actuelle de l'utilisateur
+    const removeImage = req.body.removeImage
+
+    // On récupère l'image actuelle du post à modifier
+    const previousImage = req.body.previousImage;
+
     // Vérification que postId et newContent sont présents
-    if (!postId || !newContent) {
+    if (!postId || !newContent || !currentUserId) {
         return res.status(400).json({ message: "ID du post et contenu requis " });
     }
     
