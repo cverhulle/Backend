@@ -166,12 +166,16 @@ exports.savePost = (req, res, next) => {
 };
 
 // Cette méthode permet de modifier le contenu d'un post.
+
+// ATTENTION : Double appel intentionnel (et à améliorer ?) : on lit d'abord le post pour connaître l'image existante,
+// puis on met à jour en fonction des données transmises (image conservée, supprimée ou remplacée).
 exports.updatePost = (req, res, next) => {
 
     // On récupère l'id du post, le nouveau contenu.
     const postId = req.body.postId;
     const newContent = req.body.content
 
+    // On récupère la varaible nous informant s'il faut supprimer l'image actuelle de l'utilisateur
     const removeImage = req.body.removeImage
     
     // On récupère l'userId
@@ -205,7 +209,7 @@ exports.updatePost = (req, res, next) => {
                 // L'image existante est remplacée sans suppression explicite
                 const imageName = path.basename(fullPath);
                 imageToSend = `http://localhost:3000/images/${imageName}`;
-                
+
             } else {
                 // Aucun changement : on garde l'image actuelle
                 imageToSend = existingPost.imageInChat;
