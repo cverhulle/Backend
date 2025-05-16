@@ -14,7 +14,7 @@ router.get('/my-group', auth, groupMessageCtrl.myGroup);
 router.get('/getPreviousPosts', auth, groupMessageCtrl.getPreviousPosts)
 
 // Route permettant d'envoyer un message dans le chat
-router.get('/send-message', auth, uploadImages, groupMessageCtrl.savePost)
+router.post('/send-message', auth, uploadImages, groupMessageCtrl.savePost)
 
 // Route permettant de mettre à jour un GroupPost
 router.put('/updateGroupPost', auth, uploadImages, groupMessageCtrl.updatePost)
