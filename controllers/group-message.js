@@ -191,9 +191,6 @@ exports.updatePost = (req, res, next) => {
         imageToSend = `http://localhost:3000/images/${imageName}`;
     }
 
-
-
-
     GroupPost.findOneAndUpdate( 
         // Arguments pour rechercher le post.
         {senderId : senderId, _id : postId},
