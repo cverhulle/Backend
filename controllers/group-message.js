@@ -185,54 +185,45 @@ exports.updatePost = (req, res, next) => {
     if (!postId || !newContent || !senderId) {
         return res.status(400).json({ message: "ID du post et contenu requis " });
     }
-    
-    GroupPost.findById(postId)
-        .then( (existingPost) => {
-            if (!existingPost) {
+
+    // On récupère le chemin de la nouvelle image dans le post si elle existe.
+    const fullPath = req.filePath; 
+    let imageToSend = null;
+
+    // L'image est supprimée, mais une nouvelle est uploadée
+    if (removeImage && fullPath) {     
+        const imageName = path.basename(fullPath);
+        imageToSend = `http://localhost:3000/images/${imageName}`;
+
+    // L'image est supprimée et aucune nouvelle n'est ajoutée
+    } else if (removeImage && !fullPath) {
+        imageToSend = null;
+
+    // L'image existante est remplacée sans suppression explicite
+    } else if (!removeImage && fullPath) {
+        const imageName = path.basename(fullPath);
+        imageToSend = `http://localhost:3000/images/${imageName}`;
+
+    // Aucun changement : on garde l'image actuelle
+    } else {
+        imageToSend = previousImage
+    }
+
+    // On met à jour le post
+    GroupPost.findOneAndUpdate( 
+        // Arguments pour rechercher le post.
+        {senderId : senderId, _id : postId},
+        // Contenu à modifier
+        {content : newContent, imageInChat: imageToSend},
+        // On ajoute cette ligne pour que le updatedPost dans le .then ait les modifications.
+        {new : true}
+    )
+        .then((updatedPost) => {
+            if(!updatedPost) {
                 return res.status(404).json({message : "Post non trouvé"})
-            }
-
-            // On récupère le chemin de la nouvelle image dans le post si elle existe.
-            const fullPath = req.filePath; 
-            let imageToSend = null;
-
-            if (removeImage && fullPath) {
-                // L'image est supprimée, mais une nouvelle est uploadée
-                const imageName = path.basename(fullPath);
-                imageToSend = `http://localhost:3000/images/${imageName}`;
-
-            } else if (removeImage && !fullPath) {
-                // L'image est supprimée et aucune nouvelle n'est ajoutée
-                imageToSend = null;
-
-            } else if (!removeImage && fullPath) {
-                // L'image existante est remplacée sans suppression explicite
-                const imageName = path.basename(fullPath);
-                imageToSend = `http://localhost:3000/images/${imageName}`;
-
-            } else {
-                // Aucun changement : on garde l'image actuelle
-                imageToSend = existingPost.imageInChat;
-            }
-
-            // On met à jour le post
-            GroupPost.findOneAndUpdate( 
-                // Arguments pour rechercher le post.
-                {senderId : senderId, _id : postId},
-                // Contenu à modifier
-                {content : newContent, imageInChat: imageToSend},
-                // On ajoute cette ligne pour que le updatedPost dans le .then ait les modifications.
-                {new : true}
-            )
-                .then((updatedPost) => {
-                    if(!updatedPost) {
-                        return res.status(404).json({message : "Post non trouvé"})
-                    } 
-                    res.status(200).json(updatedPost)
-                })
-                .catch(error => res.status(500).json({error}))
+            } 
+            res.status(200).json(updatedPost)
         })
-
         .catch(error => res.status(500).json({error}))
 }
 
