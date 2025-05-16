@@ -164,3 +164,8 @@ exports.savePost = (req, res, next) => {
         })
         .catch(error => res.status(400).json({ message: "Erreur dans l'initialisation du modèle" }));
 };
+
+// Cette méthode permet de modifier le contenu d'un post.
+exports.updatePost = (req, res, next) => {
+    console.log('test')
+}
