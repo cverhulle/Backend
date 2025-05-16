@@ -194,18 +194,28 @@ exports.updatePost = (req, res, next) => {
     }
     
 
-    // On récupre le chemin de la nouvelle image dans le post si elle existe.
+// On récupère le chemin de la nouvelle image dans le post si elle existe.
     const fullPath = req.filePath; 
     let imageToSend = null;
 
-    // Si une image a été uploadée, on construit l'URL de l'image
-    if (fullPath) {
+    // L'image est supprimée, mais une nouvelle est uploadée
+    if (removeImage && fullPath) {     
         const imageName = path.basename(fullPath);
         imageToSend = `http://localhost:3000/images/${imageName}`;
+
+    // L'image est supprimée et aucune nouvelle n'est ajoutée
+    } else if (removeImage && !fullPath) {
+        imageToSend = null;
+
+    // L'image existante est remplacée sans suppression explicite
+    } else if (!removeImage && fullPath) {
+        const imageName = path.basename(fullPath);
+        imageToSend = `http://localhost:3000/images/${imageName}`;
+
+    // Aucun changement : on garde l'image actuelle
+    } else {
+        imageToSend = previousImage
     }
-
-
-
 
     Post.findOneAndUpdate( 
         // Arguments pour rechercher le post.
