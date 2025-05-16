@@ -171,6 +171,8 @@ exports.updatePost = (req, res, next) => {
     // On récupère l'id du post, le nouveau contenu.
     const postId = req.body.postId;
     const newContent = req.body.content
+
+    const removeImage = req.body.removeImage
     
     // On récupère l'userId
     const senderId = req.auth.userId;
@@ -190,13 +192,20 @@ exports.updatePost = (req, res, next) => {
             const fullPath = req.filePath; 
             let imageToSend = null;
 
-            // Si une image a été uploadée, on construit l'URL de l'image
-            if (fullPath) {
+            if (removeImage && fullPath) {
+                // L'image est supprimée, mais une nouvelle est uploadée
                 const imageName = path.basename(fullPath);
                 imageToSend = `http://localhost:3000/images/${imageName}`;
-            // Sinon, on récupère la valeur stockée précédemment
+            } else if (removeImage && !fullPath) {
+                // L'image est supprimée et aucune nouvelle n'est ajoutée
+                imageToSend = null;
+            } else if (!removeImage && fullPath) {
+                // L'image existante est remplacée sans suppression explicite
+                const imageName = path.basename(fullPath);
+                imageToSend = `http://localhost:3000/images/${imageName}`;
             } else {
-                imageToSend = existingPost.imageInChat
+                // Aucun changement : on garde l'image actuelle
+                imageToSend = existingPost.imageInChat;
             }
 
             // On met à jour le post
