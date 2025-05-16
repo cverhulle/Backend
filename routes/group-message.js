@@ -17,9 +17,9 @@ router.get('/getPreviousPosts', auth, groupMessageCtrl.getPreviousPosts)
 router.get('/send-message', auth, uploadImages, groupMessageCtrl.savePost)
 
 // Route permettant de mettre à jour un GroupPost
-router.put('/updateGroupPost', auth, uploadImages, groupMessageCtrl.updateGroupPost)
+router.put('/updateGroupPost', auth, uploadImages, groupMessageCtrl.updatePost)
 
 // Route permettant de supprimer un GroupPost
-router.delete('/deleteGroupPost', auth, groupMessageCtrl.deleteGroupPost)
+router.delete('/deleteGroupPost', auth, groupMessageCtrl.deletePost)
 
 module.exports = router;
