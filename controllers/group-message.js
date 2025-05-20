@@ -251,3 +251,8 @@ exports.deletePost = (req, res, next) => {
         res.status(500).json({ error });
     }
 }
+
+// Cette méthode permet de donner la liste des groupes à rejoindre en fonction des critères fournis
+exports.deletePost = (req, res, next) => {
+    console.log('test')
+}

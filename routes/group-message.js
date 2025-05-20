@@ -22,4 +22,7 @@ router.put('/updatePost', auth, uploadImages, groupMessageCtrl.updatePost)
 // Route permettant de supprimer un GroupPost
 router.delete('/deletePost', auth, groupMessageCtrl.deletePost)
 
+// Route permettant de chercher les groupes à rejoindre
+router.post('/join-a-group', auth, groupMessageCtrl.joinAGroup)
+
 module.exports = router;
