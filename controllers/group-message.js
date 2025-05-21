@@ -275,11 +275,13 @@ exports.joinAGroup = (req, res, next) => {
 
     // On ajoute le filtre lié aux languages sélectionnés
     if (groupLanguages && groupLanguages.length > 0) {
-        query.groupLanguages = { $in: groupLanguages };
+        query.groupLanguages = { $all: groupLanguages };
     }
 
     // On ajoute le filtre lié aux catégories sélectionnées
     if (groupCategories && groupCategories.length > 0) {
-        query.groupCategories = { $in: groupCategories };
+        query.groupCategories = { $all: groupCategories };
     }
+
+    console.log(query)
 }
