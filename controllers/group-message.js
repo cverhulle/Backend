@@ -283,12 +283,18 @@ exports.joinAGroup = (req, res, next) => {
         query.groupCategories = { $all: groupCategories };
     }
 
+    // On recherche les groupes correspondant au filtre
     GroupMessage.find(query)
+
+        // On ne retourne pas le mot de passe au front
         .select('-groupPassword')
 
+        // On retourne les groupes correspondant au format JSON
         .then(groups =>{
             console.log(groups)
             res.status(200).json(groups)
         })
+
+        // En cas d'erreur, on retourne une erreur
         .catch( () => res.status(500).json( {message : "Une erreur est survenue lors de la recherche"}))
 }
