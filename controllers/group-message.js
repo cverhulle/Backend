@@ -257,4 +257,29 @@ exports.joinAGroup = (req, res, next) => {
 
     // On récupère les données de la requête
     const {groupName, groupType, groupLanguages, groupCategories} = req.body
+
+    // On crée la variable qui contiendra les filtres à passer à  MongoDB
+    const query = {}
+
+    // On ajoute le filtre lié au nom du groupe s'il y en a un
+    if (groupName) {
+        
+        // On ajoute le paramètre "i" pour insensible à la casse
+        query.groupName = { $regex: new RegExp(groupName, 'i') }; 
+    }
+
+    // On ajoute le filtre lié au type de groupe
+    if (groupType) {
+        query.groupType = groupType;
+    }
+
+    // On ajoute le filtre lié aux languages sélectionnés
+    if (groupLanguages && groupLanguages.length > 0) {
+        query.groupLanguages = { $in: groupLanguages };
+    }
+
+    // On ajoute le filtre lié aux catégories sélectionnées
+    if (groupCategories && groupCategories.length > 0) {
+        query.groupCategories = { $in: groupCategories };
+    }
 }
