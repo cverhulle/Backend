@@ -254,5 +254,7 @@ exports.deletePost = (req, res, next) => {
 
 // Cette méthode permet de donner la liste des groupes à rejoindre en fonction des critères fournis
 exports.joinAGroup = (req, res, next) => {
-    console.log('test')
+
+    // On récupère les données de la requête
+    const {groupName, groupType, groupLanguages, groupCategories} = req.body
 }
