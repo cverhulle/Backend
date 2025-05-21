@@ -283,5 +283,12 @@ exports.joinAGroup = (req, res, next) => {
         query.groupCategories = { $all: groupCategories };
     }
 
-    console.log(query)
+    GroupMessage.find(query)
+        .select('-groupPassword')
+
+        .then(groups =>{
+            console.log(groups)
+            res.status(200).json(groups)
+        })
+        .catch( () => res.status(500).json( {message : "Une erreur est survenue lors de la recherche"}))
 }
