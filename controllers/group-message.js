@@ -252,8 +252,12 @@ exports.deletePost = (req, res, next) => {
     }
 }
 
-// Cette méthode permet de donner la liste des groupes à rejoindre en fonction des critères fournis
+// Cette méthode permet de donner la liste des groupes à rejoindre en fonction des critères fournis 
+// (en retirant les groupes dans lesquels l'utilisateur est déjà membre)
 exports.joinAGroup = (req, res, next) => {
+
+    // On récupère l'id de l'utilisateur en cours
+    userId = req.auth.userId
 
     // On récupère les données de la requête
     const {groupName, groupType, groupLanguages, groupCategories} = req.body
@@ -282,6 +286,9 @@ exports.joinAGroup = (req, res, next) => {
     if (groupCategories && groupCategories.length > 0) {
         query.groupCategories = { $all: groupCategories };
     }
+
+    // On ajoute le critère pour retirer les groupes dans lesquels l'utilisateur est membre
+    query.members = { $ne: userId };
 
     // On recherche les groupes correspondant au filtre
     GroupMessage.find(query)
