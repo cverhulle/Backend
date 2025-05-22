@@ -297,7 +297,6 @@ exports.joinAGroup = (req, res, next) => {
 
         // On retourne les groupes correspondant au format JSON
         .then(groups =>{
-            console.log(groups)
             res.status(200).json(groups)
         })
 
