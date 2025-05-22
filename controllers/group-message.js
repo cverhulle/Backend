@@ -289,6 +289,12 @@ exports.joinAGroup = (req, res, next) => {
         // On ne retourne pas le mot de passe au front
         .select('-groupPassword')
 
+        // On récupère les informations sur le créateur
+        .populate('creator', 'loginInfo.username image')
+
+        // On récupère les informations sur les membres
+        .populate('members', 'loginInfo.username image')
+
         // On retourne les groupes correspondant au format JSON
         .then(groups =>{
             console.log(groups)
