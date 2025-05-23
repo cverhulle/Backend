@@ -317,7 +317,7 @@ exports.addUserToAGroup = (req, res, next) => {
     userId = req.auth.userId
 
     // On récupère le groupId en paramètre
-    groupId = req.params.groupId
+    groupId = req.body.groupId
 
     console.log(groupId)
 }
