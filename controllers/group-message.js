@@ -310,3 +310,7 @@ exports.joinAGroup = (req, res, next) => {
         // En cas d'erreur, on retourne une erreur
         .catch( () => res.status(500).json( {message : "Une erreur est survenue lors de la recherche"}))
 }
+
+exports.addUserToAGroup = (req, res, next) => {
+    console.log('test')
+}
