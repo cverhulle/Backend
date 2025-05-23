@@ -26,6 +26,6 @@ router.delete('/deletePost', auth, groupMessageCtrl.deletePost)
 router.post('/join-a-group', auth, groupMessageCtrl.joinAGroup)
 
 // Route permettant d'ajouter un utilisateur à un groupe
-router.get('/add-user', auth, groupMessageCtrl.addUserToAGroup)
+router.post('/add-user', auth, groupMessageCtrl.addUserToAGroup)
 
 module.exports = router;
