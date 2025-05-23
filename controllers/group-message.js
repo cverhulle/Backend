@@ -312,5 +312,12 @@ exports.joinAGroup = (req, res, next) => {
 }
 
 exports.addUserToAGroup = (req, res, next) => {
-    console.log('test')
+    
+    // On récupère l'id de l'utilisateur en cours
+    userId = req.auth.userId
+
+    // On récupère le groupId en paramètre
+    groupId = req.params.groupId
+
+    console.log(groupId)
 }
