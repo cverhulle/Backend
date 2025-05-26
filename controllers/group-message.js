@@ -327,7 +327,7 @@ exports.addUserToAGroup = (req, res, next) => {
     }
 
     // On cherche le groupe par rapport à son Id
-    Group.findById(groupId)
+    GroupMessage.findById(groupId)
         .then( group => {
 
             // Si aucun group n'est trouvé, on retourne une erreur
