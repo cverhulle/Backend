@@ -2,6 +2,7 @@ const GroupMessage = require('../models/group')
 const path = require('path')
 const bcrypt = require('bcrypt');
 const GroupPost = require('../models/groupPost')
+const User = require('../models/user')
 
 exports.createGroup = (req,res,next) => {
     // On récupère les données du formulaire.
@@ -320,5 +321,8 @@ exports.addUserToAGroup = (req, res, next) => {
     // On récupère le groupId en paramètre
     groupId = req.body.groupId
 
-    console.log(groupId)
+    // On retourne une erreur si l'utilisateur ou le groupId n'est pas reconnu
+    if (!userId || !groupId) {
+        res.status(400).json({message : "L'userId et le groupId sont requis"})
+    }
 }
