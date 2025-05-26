@@ -311,6 +311,7 @@ exports.joinAGroup = (req, res, next) => {
         .catch( () => res.status(500).json( {message : "Une erreur est survenue lors de la recherche"}))
 }
 
+// Cette méthode permet d'ajouter l'utilisateur dans un groupe
 exports.addUserToAGroup = (req, res, next) => {
     
     // On récupère l'id de l'utilisateur en cours
