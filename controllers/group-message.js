@@ -321,6 +321,9 @@ exports.addUserToAGroup = (req, res, next) => {
     // On récupère le groupId en paramètre
     groupId = req.body.groupId
 
+    // On récupère le mot de passe
+    password = req.body.password
+
     // On retourne une erreur si l'utilisateur ou le groupId n'est pas reconnu
     if (!userId || !groupId) {
         res.status(400).json({message : "L'userId et le groupId sont requis"})
@@ -332,17 +335,31 @@ exports.addUserToAGroup = (req, res, next) => {
 
             // Si aucun group n'est trouvé, on retourne une erreur
             if (!group) {
-                return res.status(404).json({ message: "Groupe introuvable." });
+                return res.status(404).json({ success: false, message: "Groupe introuvable." });
             }
 
             // Si l'utilisateur est déjà membre, on retourne "une erreur"
             if (group.members.includes(userId)) {
-                return res.status(400).json({ message: "Vous êtes déjà membre de ce groupe." });
+                return res.status(400).json({ success: false, message: "Vous êtes déjà membre de ce groupe." });
             }
 
             // Si le groupe est déjà complet, on retourne "une erreur"
             if (group.members.length >= 10) {
-                return res.status(403).json({ message: "Ce groupe est complet." });
+                return res.status(403).json({ success: false, message: "Ce groupe est complet." });
+            }
+
+            if (group.groupType === "Restreint") {
+                if (!password) {
+                    return res.status(403).json({ success: false, message: "Mot de passe requis pour rejoindre ce groupe." });
+                }
+
+                bcrypt.compare(password, group.groupPassword)
+                    .then( passwordValid => {
+                        if (!passwordValid) {
+                            return res.status(403).json({ success: false, message: "Mot de passe incorrect." });
+                        }
+                    })
+                    .catch( (error) => res.status(500).json( {success: false, message : "Une erreur est survenue lors de la comparaison des mots de passe"}))
             }
 
             // On ajoute l'utilisateur au groupe
@@ -350,9 +367,9 @@ exports.addUserToAGroup = (req, res, next) => {
 
             // On sauvegarde le groupe
             group.save()
-                .then(() => res.status(200).json({ message: "Utilisateur ajouté avec succès." }))
-                .catch( () => res.status(500).json({message : "Erreur lors de la sauvegarde du groupe"}))
+                .then(() => res.status(200).json({success: true,  message: "Utilisateur ajouté avec succès." }))
+                .catch( () => res.status(500).json({success: false, message : "Erreur lors de la sauvegarde du groupe"}))
         })
-        .catch( (error) => res.status(500).json( {message : "Une erreur est survenue lors de la recherche"}))
+        .catch( (error) => res.status(500).json( {success: false, message : "Une erreur est survenue lors de la recherche"}))
 
 }
