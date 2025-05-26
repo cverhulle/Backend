@@ -348,13 +348,19 @@ exports.addUserToAGroup = (req, res, next) => {
                 return res.status(403).json({ success: false, message: "Ce groupe est complet." });
             }
 
+            // Si le groupe est restreint
             if (group.groupType === "Restreint") {
+
+                // S'il n'y a pas de mot de passe entré, on retourne une erreur
                 if (!password) {
                     return res.status(403).json({ success: false, message: "Mot de passe requis pour rejoindre ce groupe." });
                 }
 
+                // Sinon, on compare avec bcrypt
                 return bcrypt.compare(password, group.groupPassword)
                     .then( passwordValid => {
+
+                        // Si le mot de passe est incorrect, on retourne une erreur
                         if (!passwordValid) {
                             return res.status(403).json({ success: false, message: "Mot de passe incorrect." });
                         }
