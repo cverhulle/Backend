@@ -325,4 +325,28 @@ exports.addUserToAGroup = (req, res, next) => {
     if (!userId || !groupId) {
         res.status(400).json({message : "L'userId et le groupId sont requis"})
     }
+
+
+    Group.findById(groupId)
+        .then( group => {
+            if (!group) {
+                res.status(404).json({ message: "Groupe introuvable." });
+            }
+
+            if (group.members.includes(userId)) {
+                return res.status(400).json({ message: "Vous êtes déjà membre de ce groupe." });
+            }
+
+            if (group.members.length >= 10) {
+                res.status(403).json({ message: "Ce groupe est complet." });
+            }
+
+            group.members.push(userId);
+
+            group.save()
+                .then(() => res.status(200).json({ message: "Utilisateur ajouté avec succès." }))
+                .catch( () => res.status(500).json({message : "Erreur lors de la sauvegarde du groupe"}))
+        })
+        .catch( (error) => res.status(500).json( {message : "Une erreur est survenue lors de la recherche"}))
+
 }
