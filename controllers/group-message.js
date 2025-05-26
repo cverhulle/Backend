@@ -353,14 +353,22 @@ exports.addUserToAGroup = (req, res, next) => {
                     return res.status(403).json({ success: false, message: "Mot de passe requis pour rejoindre ce groupe." });
                 }
 
-                bcrypt.compare(password, group.groupPassword)
+                return bcrypt.compare(password, group.groupPassword)
                     .then( passwordValid => {
                         if (!passwordValid) {
                             return res.status(403).json({ success: false, message: "Mot de passe incorrect." });
                         }
+
+                        // On ajoute l'utilisateur au groupe
+                        group.members.push(userId);
+
+                        // On sauvegarde le groupe
+                        return group.save()
+                            .then(() => res.status(200).json({success: true,  message: "Utilisateur ajouté avec succès." }))
+                            .catch( () => res.status(500).json({success: false, message : "Erreur lors de la sauvegarde du groupe"}))
                     })
                     .catch( (error) => res.status(500).json( {success: false, message : "Une erreur est survenue lors de la comparaison des mots de passe"}))
-            }
+            } 
 
             // On ajoute l'utilisateur au groupe
             group.members.push(userId);
